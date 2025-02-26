@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class FloorTilesManager : MonoBehaviour
 {
-    // tilePrefab must be a GameObject that represents the tile to be instantiated in the grid.
+    // floorCell must be a GameObject that represents the tile to be instantiated in the grid.
     // This can be any prefab that you have created in Unity, such as a simple plane, a textured tile, or any other object you want to use as a floor tile.
-    public GameObject tilePrefab;
-    public int tileScale = 32; // the width and height of the tile in world units. this is used to calculate the position of the tiles
+    public GameObject floorCell;
+
+    public GameObject food;
+
+    public int cellScale = 32; // the width and height of the tile in world units. this is used to calculate the position of the tiles
     public int initialRows = 4;
     public int initialColumns = 4;
     private Dictionary<Vector2Int, GameObject> tiles; // Dictionary to store the tiles with coordinates as keys
@@ -37,9 +40,9 @@ public class FloorTilesManager : MonoBehaviour
             for (int j = 0; j < initialColumns; j++)
             {
                 // Calculate the position of the tile based on the row and column
-                Vector3 position = new Vector3(i * tileScale, j * tileScale, 0);
+                Vector3 position = new Vector3(i * cellScale, j * cellScale, 0);
                 // Instantiate the tile prefab at the calculated position
-                GameObject tile = Instantiate(tilePrefab, position, Quaternion.identity);
+                GameObject tile = Instantiate(floorCell, position, Quaternion.identity);
                 // Set the parent of the tile to this object
                 tile.transform.parent = this.transform;
                 // Store the tile in the dictionary with coordinates as key
@@ -55,9 +58,9 @@ public class FloorTilesManager : MonoBehaviour
             for (int j = 0; j < columns; j++)
             {
                 // Calculate the position of the tile based on the row and column
-                Vector3 position = new Vector3((bottomLeftCorner.x + i) * tileScale, (bottomLeftCorner.y + j) * tileScale, 0);
+                Vector3 position = new Vector3((bottomLeftCorner.x + i) * cellScale, (bottomLeftCorner.y + j) * cellScale, 0);
                 // Instantiate the tile prefab at the calculated position
-                GameObject tile = Instantiate(tilePrefab, position, Quaternion.identity);
+                GameObject tile = Instantiate(floorCell, position, Quaternion.identity);
                 // Set the parent of the tile to this object
                 tile.transform.parent = this.transform;
                 // Store the tile in the dictionary with coordinates as key
@@ -124,5 +127,58 @@ public class FloorTilesManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    // public function to get the location of a tile where food can be placed
+    // the floorCell has a script attached to it called CellProperties.cs
+    // this script has a public bool variable called isFoodAllowed
+    // this function will return the location of a tile where isFoodAllowed is true
+    public Vector2Int GetCellPositionForFood()
+    {
+        List<Vector2Int> foodLocations = new List<Vector2Int>();
+        foreach (var tile in tiles)
+        {
+            Vector2Int position = tile.Key;
+            CellProperties cellProperties = tile.Value.GetComponent<CellProperties>();
+            if (cellProperties.isFoodAllowed)
+            {
+                foodLocations.Add(position);
+            }
+        }
+        if (foodLocations.Count > 0)
+        {
+            return foodLocations[Random.Range(0, foodLocations.Count)];
+        }
+        return new Vector2Int(0, 0);
+    }
+
+    public bool CanMoveToCell(Vector2Int cellCoordinate)
+    {
+        if (!tiles.ContainsKey(cellCoordinate))
+        {
+            return false;
+        }
+        CellProperties cellProperties = tiles[cellCoordinate].GetComponent<CellProperties>();
+        return cellProperties.isPassable;
+    }
+
+    public Vector2Int PixelCoordinateToCellCoordinate(Vector3 pixelCoordinate)
+    {
+        return new Vector2Int((int)(pixelCoordinate.x / cellScale), (int)(pixelCoordinate.y / cellScale));
+    }
+
+    public Vector3 CellCoordinateToPixelCoordinate(Vector2Int cellCoordinate)
+    {
+        return new Vector3(cellCoordinate.x * cellScale, cellCoordinate.y * cellScale, 0);
+    }
+
+    public void SpawnFood(Vector2Int cellPosition)
+    {
+        // -1 on z to make food visible
+        Instantiate(food, CellCoordinateToPixelCoordinate(cellPosition) + new Vector3(0, 0, -1), Quaternion.identity);
+        // set the isFoodAllowed property of the cell to false
+        CellProperties cellProperties = tiles[cellPosition].GetComponent<CellProperties>();
+        cellProperties.isFoodAllowed = false;
+        cellProperties.score = 1;
     }
 }

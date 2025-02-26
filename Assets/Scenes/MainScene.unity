@@ -312,7 +312,7 @@ Camera:
   far clip plane: 1000
   field of view: 132.9
   orthographic: 1
-  orthographic size: 200
+  orthographic size: 300
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -343,6 +343,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 864397731}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &696191027 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+  m_PrefabInstance: {fileID: 1200567235}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 013c3639bcf726f45ac58c1d44410395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &864397729
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,6 +415,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3776027783360658542, guid: f145e18fb527087419b036b5e5c38e64, type: 3}
+      propertyPath: floorTilesManager
+      value: 
+      objectReference: {fileID: 696191027}
     - target: {fileID: 7973506637381630859, guid: f145e18fb527087419b036b5e5c38e64, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -449,9 +464,83 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f145e18fb527087419b036b5e5c38e64, type: 3}
+--- !u!1001 &1200567235
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2486452277969279855, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486452277969279855, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486452277969279855, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486452277969279855, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486452277969279855, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486452277969279855, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486452277969279855, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486452277969279855, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486452277969279855, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2486452277969279855, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: expansionRowsMax
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: expansionRowsMin
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: expansionColumnsMax
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: expansionColumnsMin
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6806975101139892390, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: m_Name
+      value: FloorTilesManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 864397731}
   - {fileID: 1044557376}
+  - {fileID: 1200567235}

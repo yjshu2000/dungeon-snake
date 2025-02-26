@@ -21,5 +21,12 @@ public class GameManager : MonoBehaviour
             // Call the ExpandGrid function on the floorTilesManager
             floorTilesManager.ExpandGrid();
         }
+        else if (Input.GetKeyDown(KeyCode.F))
+        {
+            // get the cell position where food can be spawned
+            Vector2Int foodPosition = floorTilesManager.GetCellPositionForFood();
+            // spawn the food at the cell position
+            floorTilesManager.SpawnFood(foodPosition);
+        }
     }
 }
