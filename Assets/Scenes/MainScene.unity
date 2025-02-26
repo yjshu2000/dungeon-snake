@@ -145,7 +145,7 @@ Transform:
   m_GameObject: {fileID: 164462215}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -337,7 +337,7 @@ Transform:
   m_GameObject: {fileID: 185789498}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -100}
   m_LocalScale: {x: 0.03125, y: 0.03125, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -513,20 +513,36 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: food
+      value: 
+      objectReference: {fileID: 6149115919813668082, guid: 900c5e77428330146ba293ab6da0340a, type: 3}
+    - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: floorCell
+      value: 
+      objectReference: {fileID: 3084807826278501789, guid: 833143f7459f5d442bc0a75d9e1ce5df, type: 3}
+    - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: initialRows
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+      propertyPath: initialColumns
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
       propertyPath: expansionRowsMax
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
       propertyPath: expansionRowsMin
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
       propertyPath: expansionColumnsMax
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
       propertyPath: expansionColumnsMin
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6806975101139892390, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
       propertyPath: m_Name
