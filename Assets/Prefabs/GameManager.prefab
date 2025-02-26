@@ -45,3 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floorTilesManager: {fileID: 3215306959685060505, guid: 8e595e13490da1241b79d4ea14eb959a, type: 3}
+  foodPrefab: {fileID: 5945374902013529450, guid: 988c7b56d61959f429d89bf818ac1d02, type: 3}
+  snakeHead: {fileID: 834857434646667803}

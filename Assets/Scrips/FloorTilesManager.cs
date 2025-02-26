@@ -9,12 +9,13 @@ public class FloorTilesManager : MonoBehaviour
     public int tileScale = 32; // the width and height of the tile in world units. this is used to calculate the position of the tiles
     public int initialRows = 4;
     public int initialColumns = 4;
-    private Dictionary<Vector2Int, GameObject> tiles; // Dictionary to store the tiles with coordinates as keys
+    public Dictionary<Vector2Int, GameObject> tiles; // Dictionary to store the tiles with coordinates as keys
     // expansion variables
     public int expansionRowsMin = 4;
     public int expansionRowsMax = 4;
     public int expansionColumnsMin = 4;
     public int expansionColumnsMax = 4;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -125,4 +126,5 @@ public class FloorTilesManager : MonoBehaviour
         }
         return false;
     }
+    
 }
