@@ -110,4 +110,9 @@ public class SnakeMovement : MonoBehaviour
             Debug.Log("Hit yourself!");
         }
     }
+
+    // Get the length of the snake
+    public int GetSnakeLength() {
+        return snakeSegments.Count;
+    }
 }
