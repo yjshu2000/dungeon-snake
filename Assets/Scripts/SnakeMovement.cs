@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class SnakeMovement : MonoBehaviour {
+public class SnakeMovement : MonoBehaviour
+{
     public float moveSpeed = 5f; // Speed of movement
     public Vector2Int gridSize = new Vector2Int(1, 1); // Grid size
     private Vector2Int direction = Vector2Int.zero; // Default direction
@@ -39,10 +40,11 @@ public class SnakeMovement : MonoBehaviour {
         }
     }
 
-    void MoveSnake() {
+    void MoveSnake()
+    {
         moveTimer += Time.fixedDeltaTime;
         if (moveTimer >= moveInterval || inputReceived == true) {
-            transform.position += new Vector3(Mathf.Ceil(direction.x * gridSize.x), Mathf.Ceil(direction.y * gridSize.y), 0);
+            transform.position += new Vector3(direction.x * gridSize.x, direction.y * gridSize.y, 0);
             moveTimer = 0f;
             inputReceived = false;
         }
