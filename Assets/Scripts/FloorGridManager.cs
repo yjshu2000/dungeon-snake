@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridManager : MonoBehaviour {
+public class FloorGridManager : MonoBehaviour {
     public int chunkSize = 4; // Each chunk is a 4x4 area of tiles
     public int gridSize = 16; // Initial size of map (number of chunks)
-    public GameObject tilePrefab; // Prefab for individual tiles (1x1 cells)
+    public GameObject tilePrefab; // Prefab for individual tiles
 
     private HashSet<Vector2Int> chunkPositions = new HashSet<Vector2Int>(); // Tracks occupied chunks
     private Dictionary<Vector2Int, GameObject> gridMap = new Dictionary<Vector2Int, GameObject>();
+
+    private List<Vector2Int> tilePositions = new List<Vector2Int>(); // Store all tile positions
+    public List<Vector2Int> TilePositions => tilePositions; // Public getter
 
     void Start() {
         InitializeGrid();
@@ -44,6 +47,7 @@ public class GridManager : MonoBehaviour {
                     GameObject newTile = Instantiate(tilePrefab, new Vector3(tilePosition.x, tilePosition.y, 0), Quaternion.identity);
                     newTile.name = $"Tile {tilePosition.x},{tilePosition.y}";
                     gridMap[tilePosition] = newTile;
+                    tilePositions.Add(tilePosition);
                 }
             }
         }
@@ -83,5 +87,15 @@ public class GridManager : MonoBehaviour {
             }
         }
         return edgeChunks;
+    }
+
+    public Vector2Int GetRandomTilePosition(HashSet<Vector2Int> blockedPositions) {
+        if (tilePositions.Count == 0) return Vector2Int.zero; // Prevent errors if no tiles exist
+
+        List<Vector2Int> validPositions = tilePositions.FindAll(pos => !blockedPositions.Contains(pos));
+
+        if (validPositions.Count == 0) return Vector2Int.zero; // No valid position found
+
+        return validPositions[Random.Range(0, validPositions.Count)];
     }
 }

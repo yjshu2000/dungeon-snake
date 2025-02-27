@@ -13,11 +13,11 @@ public class SnakeMovement : MonoBehaviour
     private bool inputReceived = false;
 
     public GameObject segmentPrefab; // Prefab for a single snake segment
-    private List<Transform> segments = new List<Transform>(); // List of snake body segments
+    private List<Transform> snakeSegments = new List<Transform>(); // List of snake body segments
 
     void Start() {
         // Initialize with head as first segment
-        segments.Add(transform);
+        snakeSegments.Add(transform);
     }
 
     void Update() {
@@ -58,8 +58,8 @@ public class SnakeMovement : MonoBehaviour
         moveTimer += Time.fixedDeltaTime;
         if (moveTimer >= moveInterval || inputReceived == true) {
             // Move each segment to the position of the previous segment
-            for (int i = segments.Count - 1; i > 0; i--) {
-                segments[i].position = segments[i - 1].position;
+            for (int i = snakeSegments.Count - 1; i > 0; i--) {
+                snakeSegments[i].position = snakeSegments[i - 1].position;
             }
             // Move the head in the current direction
             transform.position += new Vector3(direction.x * gridSize.x, direction.y * gridSize.y, 0);
@@ -71,9 +71,17 @@ public class SnakeMovement : MonoBehaviour
 
     public void GrowSnake() {
         for (int i = 0; i < 4; i++) { // Add 4 segments 
-            Vector3 newSegmentPosition = segments[segments.Count - 1].position;
+            Vector3 newSegmentPosition = snakeSegments[snakeSegments.Count - 1].position;
             GameObject newSegment = Instantiate(segmentPrefab, newSegmentPosition, Quaternion.identity);
-            segments.Add(newSegment.transform);
+            snakeSegments.Add(newSegment.transform);
         }
+    }
+
+    public List<Vector2Int> GetSnakePositions() {
+        List<Vector2Int> positions = new List<Vector2Int>();
+        foreach (var segment in snakeSegments) {
+            positions.Add(new Vector2Int((int)segment.position.x, (int)segment.position.y));
+        }
+        return positions;
     }
 }
