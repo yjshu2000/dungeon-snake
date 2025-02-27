@@ -18,7 +18,9 @@ public class SnakeMovement : MonoBehaviour
     private FloorGridManager floorGridManager;
 
     void Start() {
-        snakeSegments.Add(transform); // Add head as first segment
+        snakeSegments.Add(transform); // Add head as first segment, then add 1 body segment
+        GameObject firstSegment = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        snakeSegments.Add(firstSegment.transform);
         foodSpawner = FindAnyObjectByType<FoodSpawner>();
         floorGridManager = FindAnyObjectByType<FloorGridManager>();
     }
@@ -58,6 +60,9 @@ public class SnakeMovement : MonoBehaviour
 
     void MoveSnake() {
         moveTimer += Time.fixedDeltaTime;
+        if (direction == Vector2Int.zero) {
+            return;
+        }
         if (moveTimer >= moveInterval || inputReceived == true) {
             // Move each segment to the position of the previous segment
             for (int i = snakeSegments.Count - 1; i > 0; i--) {
