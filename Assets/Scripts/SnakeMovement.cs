@@ -3,21 +3,22 @@ using UnityEngine;
 
 public class SnakeMovement : MonoBehaviour
 {
+    private float moveTimer = 0f;
+    public float moveInterval = 0.2f; // Time between movement steps
     public float moveSpeed = 5f; // Speed of movement
     public Vector2Int gridSize = new Vector2Int(1, 1); // Grid size
     private Vector2Int direction = Vector2Int.zero; // Default direction
-
-    private float moveTimer = 0f;
-    public float moveInterval = 0.2f; // Time between movement steps
 
     private bool inputReceived = false;
 
     public GameObject segmentPrefab; // Prefab for a single snake segment
     private List<Transform> snakeSegments = new List<Transform>(); // List of snake body segments
 
+    private FoodSpawner foodSpawner;
+
     void Start() {
-        // Initialize with head as first segment
-        snakeSegments.Add(transform);
+        snakeSegments.Add(transform); // Add head as first segment
+        foodSpawner = FindAnyObjectByType<FoodSpawner>();
     }
 
     void Update() {
@@ -35,7 +36,6 @@ public class SnakeMovement : MonoBehaviour
     }
 
     void HandleInput() {
-        // use the size of the snake to determine the grid size
         if (Input.GetKeyDown(KeyCode.UpArrow) && direction != Vector2Int.down && direction != Vector2Int.up) {
             direction = Vector2Int.up;
             inputReceived = true;
@@ -83,5 +83,23 @@ public class SnakeMovement : MonoBehaviour
             positions.Add(new Vector2Int((int)segment.position.x, (int)segment.position.y));
         }
         return positions;
+    }
+
+    // COLLISION HANDLING
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("Food")) {
+            Debug.Log("Hit a food!");
+            Destroy(other.gameObject);
+            foodSpawner.SpawnFood();
+            GrowSnake();
+        }
+        else if (other.CompareTag("Wall")) {
+            // Implement damage or stop movement logic
+            Debug.Log("Hit a wall!");
+        }
+        else if (other.CompareTag("SnakeBody")) {
+            // Game over logic
+            Debug.Log("Hit yourself!");
+        }
     }
 }
