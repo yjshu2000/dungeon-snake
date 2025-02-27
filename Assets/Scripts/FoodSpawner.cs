@@ -11,7 +11,7 @@ public class FoodSpawner : MonoBehaviour
     void Start() {
         floorGridManager = FindAnyObjectByType<FloorGridManager>();
         snake = FindAnyObjectByType<SnakeMovement>();
-        SpawnFood();
+        Instantiate(foodPrefab, new Vector3(3, 3, 0), Quaternion.identity);
     }
 
     // Update is called once per frame

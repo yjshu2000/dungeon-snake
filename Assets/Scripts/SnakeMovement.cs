@@ -15,10 +15,12 @@ public class SnakeMovement : MonoBehaviour
     private List<Transform> snakeSegments = new List<Transform>(); // List of snake body segments
 
     private FoodSpawner foodSpawner;
+    private FloorGridManager floorGridManager;
 
     void Start() {
         snakeSegments.Add(transform); // Add head as first segment
         foodSpawner = FindAnyObjectByType<FoodSpawner>();
+        floorGridManager = FindAnyObjectByType<FloorGridManager>();
     }
 
     void Update() {
@@ -92,6 +94,7 @@ public class SnakeMovement : MonoBehaviour
             Destroy(other.gameObject);
             foodSpawner.SpawnFood();
             GrowSnake();
+            floorGridManager.ExpandBoard();
         }
         else if (other.CompareTag("Wall")) {
             // Implement damage or stop movement logic

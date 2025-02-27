@@ -558,8 +558,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chunkSize: 4
-  gridSize: 16
-  tilePrefab: {fileID: 500492775605616094, guid: ad1e185faf8553e4898363c14f0c57f6, type: 3}
+  gridSize: 4
+  tilePrefab: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

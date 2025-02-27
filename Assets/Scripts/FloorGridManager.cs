@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FloorGridManager : MonoBehaviour {
-    public int chunkSize = 4; // Each chunk is a 4x4 area of tiles
-    public int gridSize = 16; // Initial size of map (number of chunks)
+    private int chunkSize = 4; // Each chunk is a 4x4 area of tiles
+    private int gridSize = 4; // Initial size of map (number of chunks)
     public GameObject tilePrefab; // Prefab for individual tiles
 
     private HashSet<Vector2Int> chunkPositions = new HashSet<Vector2Int>(); // Tracks occupied chunks
