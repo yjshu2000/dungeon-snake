@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public GameObject canvasManager;
 
     public GameObject snake;
+    public GameObject floorGridManager;
+    public GameObject foodManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -27,6 +29,11 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha3)) {
             canvasManager.GetComponent<CanvasManager>().ShowGameOverPanel();
+        }
+        if (Input.GetKeyDown(KeyCode.R)) {
+            floorGridManager.GetComponent<FloorGridManager>().InitializeGrid();
+            snake.GetComponent<SnakeMovement>().ResetSnake();
+            foodManager.GetComponent<FoodSpawner>().ResetFood();
         }
 
         canvasManager.GetComponent<CanvasManager>().SetSnakeLength(snake.GetComponent<SnakeMovement>().GetSnakeLength());

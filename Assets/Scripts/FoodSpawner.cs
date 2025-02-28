@@ -30,4 +30,13 @@ public class FoodSpawner : MonoBehaviour
             Instantiate(foodPrefab, new Vector3(foodPosition.x, foodPosition.y, 0), Quaternion.identity);
         }
     }
+
+    public void ResetFood() {
+        GameObject[] foodObjects = GameObject.FindGameObjectsWithTag("Food");
+        foreach (GameObject food in foodObjects) {
+            Destroy(food);
+        }
+        // spawn new food
+        SpawnFood();
+    }
 }

@@ -12,6 +12,11 @@ public class FloorGridManager : MonoBehaviour {
     private List<Vector2Int> tilePositions = new List<Vector2Int>(); // Store all tile positions
     public List<Vector2Int> TilePositions => tilePositions; // Public getter
 
+    public GameObject wallPrefab; // Prefab for walls
+    private HashSet<Vector2Int> wallChunkPositions = new HashSet<Vector2Int>(); // Tracks occupied wall chunks
+    private Dictionary<Vector2Int, GameObject> wallGridMap = new Dictionary<Vector2Int, GameObject>(); // Store all wall tiles
+    private List<Vector2Int> wallPositions = new List<Vector2Int>(); // Store all wall positions
+
     void Start() {
         InitializeGrid();
     }
@@ -22,7 +27,10 @@ public class FloorGridManager : MonoBehaviour {
         }
     }
 
-    void InitializeGrid() {
+    public void InitializeGrid() {
+        // clear all existing tiles and walls
+        RemoveAllTiles();
+        RemoveAllWall();
         AddChunk(new Vector2Int(0, 0));
         for (int i = 0; i < gridSize; i++) {
             ExpandBoard();
@@ -60,6 +68,8 @@ public class FloorGridManager : MonoBehaviour {
         Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
         List<Vector2Int> possibleExpansions = new List<Vector2Int>();
 
+        RemoveAllWall();
+
         foreach (Vector2Int dir in directions) {
             Vector2Int newChunkPos = selectedChunk + dir;
             if (!chunkPositions.Contains(newChunkPos)) {
@@ -71,6 +81,8 @@ public class FloorGridManager : MonoBehaviour {
             Vector2Int expansionPos = possibleExpansions[Random.Range(0, possibleExpansions.Count)];
             AddChunk(expansionPos);
         }
+
+        BuildWall();
     }
 
     private List<Vector2Int> FindEdgeChunks() {
@@ -97,5 +109,74 @@ public class FloorGridManager : MonoBehaviour {
         if (validPositions.Count == 0) return Vector2Int.zero; // No valid position found
 
         return validPositions[Random.Range(0, validPositions.Count)];
+    }
+
+    public void BuildWall() {
+        List<Vector2Int> edgeChunks = FindEdgeChunks();
+        Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+        List<Vector2Int> possibleExpansions = new List<Vector2Int>();
+
+        foreach (Vector2Int dir in directions) {
+            foreach (Vector2Int chunk in edgeChunks) {
+                Vector2Int newChunkPos = chunk + dir;
+                if (!chunkPositions.Contains(newChunkPos)) {
+                    possibleExpansions.Add(newChunkPos);
+                }
+            }
+        }
+
+        // fill possibleExpansions with wall tiles
+        foreach (Vector2Int expansionPos in possibleExpansions) {
+            AddWallChunk(expansionPos);
+        }
+    }
+
+    public void AddWallChunk(Vector2Int wallChunkPosition) {
+        if (wallChunkPositions.Contains(wallChunkPosition))
+            return;
+
+        wallChunkPositions.Add(wallChunkPosition);
+
+        for (int x = 0; x < chunkSize; x++) {
+            for (int y = 0; y < chunkSize; y++) {
+                Vector2Int wallPosition = new Vector2Int(
+                    wallChunkPosition.x * chunkSize + x,
+                    wallChunkPosition.y * chunkSize + y
+                );
+
+                if (!wallGridMap.ContainsKey(wallPosition)) {
+                    GameObject newWall = Instantiate(wallPrefab, new Vector3(wallPosition.x, wallPosition.y, 0), Quaternion.identity);
+                    newWall.name = $"Wall {wallPosition.x},{wallPosition.y}";
+                    wallGridMap[wallPosition] = newWall;
+                    wallPositions.Add(wallPosition);
+                }
+            }
+        }
+    }
+
+    public void RemoveAllWall() {
+        foreach (Vector2Int wallPosition in wallPositions) {
+            Destroy(wallGridMap[wallPosition]);
+            wallGridMap.Remove(wallPosition);
+            // remove game object from scene
+            GameObject wall = GameObject.Find($"Wall {wallPosition.x},{wallPosition.y}");
+            Destroy(wall);
+        }
+        wallPositions.Clear();
+        wallChunkPositions.Clear();
+        wallGridMap.Clear();
+    }
+
+    public void RemoveAllTiles() {
+        foreach (Vector2Int tilePosition in tilePositions) {
+            Destroy(gridMap[tilePosition]);
+            gridMap.Remove(tilePosition);
+            // remove game object from scene
+            GameObject tile = GameObject.Find($"Tile {tilePosition.x},{tilePosition.y}");
+            Destroy(tile);
+        }
+        tilePositions.Clear();
+        chunkPositions.Clear();
+        gridMap.Clear();
     }
 }
