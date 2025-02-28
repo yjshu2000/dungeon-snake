@@ -24,6 +24,7 @@ public class SnakeMovement : MonoBehaviour
     public bool IsMoving { get; private set; } = false;
     public int defaultLifePoints = 3;
     public int lifePoints;
+    private Transform headSpriteTransform;
 
     void Start() {
         snakeSegments.Add(transform); // Add head as first segment, then add 1 body segment
@@ -34,6 +35,8 @@ public class SnakeMovement : MonoBehaviour
         IsAlive = true;
         IsMoving = false;
         lifePoints = defaultLifePoints;
+
+        headSpriteTransform = transform.GetComponentInChildren<SpriteRenderer>().transform;
     }
 
     void Update() {
@@ -54,18 +57,22 @@ public class SnakeMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow) && direction != Vector2Int.down && direction != Vector2Int.up) {
             direction = Vector2Int.up;
             inputReceived = true;
+            RotateHeadSprite();
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow) && direction != Vector2Int.up && direction != Vector2Int.down) {
             direction = Vector2Int.down;
             inputReceived = true;
+            RotateHeadSprite();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow) && direction != Vector2Int.right && direction != Vector2Int.left) {
             direction = Vector2Int.left;
             inputReceived = true;
+            RotateHeadSprite();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) && direction != Vector2Int.left && direction != Vector2Int.right) {
             direction = Vector2Int.right;
             inputReceived = true;
+            RotateHeadSprite();
         }
     }
 
@@ -188,5 +195,31 @@ public class SnakeMovement : MonoBehaviour
     public int GetLifePoints()
     {
         return lifePoints;
+    }
+    private void RotateHeadSprite()
+    {
+        if (headSpriteTransform != null)
+        {
+            if (direction == Vector2Int.up)
+            {
+                // Up direction - default orientation (0 degrees)
+                headSpriteTransform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else if (direction == Vector2Int.right)
+            {
+                // Right direction - 90 degrees clockwise
+                headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
+            }
+            else if (direction == Vector2Int.left)
+            {
+                // Left direction - 90 degrees counterclockwise
+                headSpriteTransform.rotation = Quaternion.Euler(0, 0, 90);
+            }
+            else if (direction == Vector2Int.down)
+            {
+                // Down direction - 180 degrees
+                headSpriteTransform.rotation = Quaternion.Euler(0, 0, 180);
+            }
+        }
     }
 }
