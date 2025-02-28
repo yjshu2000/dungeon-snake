@@ -6,6 +6,7 @@ public class CanvasManager : MonoBehaviour
     private GameObject gameStartPanel;
     private GameObject gameInProgressPanel;
     private GameObject gameOverPanel;
+    public TMPro.TextMeshProUGUI snakeHPValueText; // Assign in Unity Inspector
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,8 +19,7 @@ public class CanvasManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         
     }
 
@@ -52,11 +52,11 @@ public class CanvasManager : MonoBehaviour
         lengthValueText.GetComponent<TMPro.TextMeshProUGUI>().text = length.ToString();
     }
 
-    public void SetSnakeLifePoints(int lifePoints) {
-        // change the text of GameInProgressPanel -> LifePointsLabelText -> LifePointsValueText
-        GameObject lifePointsLabelText = gameInProgressPanel.transform.Find("LifePointsLabelText").gameObject;
-        GameObject lifePointsValueText = lifePointsLabelText.transform.Find("LifePointsValueText").gameObject;
-        lifePointsValueText.GetComponent<TMPro.TextMeshProUGUI>().text = lifePoints.ToString();
+    public void SetSnakeLifePoints(int HP) {
+        // change the text of GameInProgressPanel -> SnakeHPLabelText -> SnakeHPValueText
+        GameObject lifePointsLabelText = gameInProgressPanel.transform.Find("SnakeHPLabelText").gameObject;
+        GameObject lifePointsValueText = lifePointsLabelText.transform.Find("SnakeHPValueText").gameObject;
+        lifePointsValueText.GetComponent<TMPro.TextMeshProUGUI>().text = HP.ToString();
     }
 
 

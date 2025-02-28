@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         }
 
         canvasManager.GetComponent<CanvasManager>().SetSnakeLength(snake.GetComponent<SnakeMovement>().GetSnakeLength());
-        canvasManager.GetComponent<CanvasManager>().SetSnakeLifePoints(snake.GetComponent<SnakeMovement>().GetLifePoints());
+        canvasManager.GetComponent<CanvasManager>().SetSnakeLifePoints(snake.GetComponent<SnakeMovement>().SnakeHP);
 
         if (gameReady) {
             canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();
