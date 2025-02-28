@@ -42,6 +42,7 @@ public class CanvasManager : MonoBehaviour
     public void ShowGameOverPanel() {
         HideAllPanels();
         gameOverPanel.SetActive(true);
+        gameInProgressPanel.SetActive(true);
     }
     
     public void SetSnakeLength(int length) {
@@ -49,6 +50,13 @@ public class CanvasManager : MonoBehaviour
         GameObject lengthLabelText = gameInProgressPanel.transform.Find("LengthLabelText").gameObject;
         GameObject lengthValueText = lengthLabelText.transform.Find("LengthValueText").gameObject;
         lengthValueText.GetComponent<TMPro.TextMeshProUGUI>().text = length.ToString();
+    }
+
+    public void SetSnakeLifePoints(int lifePoints) {
+        // change the text of GameInProgressPanel -> LifePointsLabelText -> LifePointsValueText
+        GameObject lifePointsLabelText = gameInProgressPanel.transform.Find("LifePointsLabelText").gameObject;
+        GameObject lifePointsValueText = lifePointsLabelText.transform.Find("LifePointsValueText").gameObject;
+        lifePointsValueText.GetComponent<TMPro.TextMeshProUGUI>().text = lifePoints.ToString();
     }
 
 

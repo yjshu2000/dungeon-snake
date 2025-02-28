@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SnakeMovement : MonoBehaviour
@@ -19,7 +20,10 @@ public class SnakeMovement : MonoBehaviour
     private FoodSpawner foodSpawner;
     private FloorGridManager floorGridManager;
 
-    public bool IsAlive = true;
+    public bool IsAlive { get; private set; } = true;
+    public bool IsMoving { get; private set; } = false;
+    public int defaultLifePoints = 3;
+    public int lifePoints;
 
     void Start() {
         snakeSegments.Add(transform); // Add head as first segment, then add 1 body segment
@@ -27,6 +31,9 @@ public class SnakeMovement : MonoBehaviour
         snakeSegments.Add(firstSegment.transform);
         foodSpawner = FindAnyObjectByType<FoodSpawner>();
         floorGridManager = FindAnyObjectByType<FloorGridManager>();
+        IsAlive = true;
+        IsMoving = false;
+        lifePoints = defaultLifePoints;
     }
 
     void Update() {
@@ -70,7 +77,23 @@ public class SnakeMovement : MonoBehaviour
         if (direction == Vector2Int.zero) {
             return;
         }
+        IsMoving = true;
         if (moveTimer >= moveInterval || inputReceived == true) {
+            inputReceived = false;
+            if (IsMovingIntoWall()) {
+                Dead();
+                return;
+            }
+            // check for body collision
+            List<Vector2Int> snakePositions = GetSnakePositions();
+            for (int i = 1; i < snakePositions.Count; i++) {
+                if (snakePositions[i] == new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y))) {
+                    HitBody();
+                    if (!IsAlive) {
+                        return;
+                    }
+                }
+            }
             // Move each segment to the position of the previous segment
             for (int i = snakeSegments.Count - 1; i > 0; i--) {
                 snakeSegments[i].position = snakeSegments[i - 1].position;
@@ -79,8 +102,15 @@ public class SnakeMovement : MonoBehaviour
             transform.position += new Vector3(direction.x * gridSize.x, direction.y * gridSize.y, 0);
 
             moveTimer = 0f;
-            inputReceived = false;
         }
+    }
+
+    private bool IsMovingIntoWall() {
+        Vector2Int nextPosition = new Vector2Int(
+                Mathf.RoundToInt(transform.position.x) + direction.x * gridSize.x,
+                Mathf.RoundToInt(transform.position.y) + direction.y * gridSize.y
+            );
+        return !floorGridManager.IsValidTilePosition(nextPosition);
     }
 
     public void GrowSnake(int segments) {
@@ -110,14 +140,29 @@ public class SnakeMovement : MonoBehaviour
         }
         else if (other.CompareTag("Wall")) {
             // Implement damage or stop movement logic
-            IsAlive = false;
-            direction = Vector2Int.zero;
             Debug.Log("Hit a wall!");
+            // Dead();
         }
         else if (other.CompareTag("SnakeBody")) {
-            // Game over logic
             Debug.Log("Hit yourself!");
+            // HitBody();
         }
+    }
+
+    void HitBody()
+    {
+        lifePoints--;
+        if (lifePoints <= 0)
+        {
+            Dead();
+        }
+    }
+
+    private void Dead()
+    {
+        IsMoving = false;
+        IsAlive = false;
+        direction = Vector2Int.zero;
     }
 
     // Get the length of the snake
@@ -136,5 +181,12 @@ public class SnakeMovement : MonoBehaviour
         GameObject firstSegment = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         snakeSegments.Add(firstSegment.transform);
         IsAlive = true;
+        IsMoving = false;
+        lifePoints = defaultLifePoints;
+    }
+
+    public int GetLifePoints()
+    {
+        return lifePoints;
     }
 }

@@ -179,4 +179,9 @@ public class FloorGridManager : MonoBehaviour {
         chunkPositions.Clear();
         gridMap.Clear();
     }
+
+    // check if a position is a valid tile position
+    public bool IsValidTilePosition(Vector2Int position) {
+        return tilePositions.Contains(position);
+    }
 }
