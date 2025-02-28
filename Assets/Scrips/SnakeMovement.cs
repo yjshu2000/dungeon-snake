@@ -24,6 +24,7 @@ public class SnakeMovement : MonoBehaviour
 
     void HandleInput()
     {
+        // use the size of the snake to determine the grid size
         if (Input.GetKeyDown(KeyCode.UpArrow) && direction != Vector2Int.down && direction != Vector2Int.up)
         {
             direction = Vector2Int.up;
@@ -51,7 +52,7 @@ public class SnakeMovement : MonoBehaviour
         moveTimer += Time.fixedDeltaTime;
         if (moveTimer >= moveInterval || inputReceived == true)
         {
-            transform.position += new Vector3(direction.x * gridSize.x, direction.y * gridSize.y, 0);
+            transform.position += new Vector3(Mathf.Ceil(direction.x * gridSize.x), Mathf.Ceil(direction.y * gridSize.y), 0);
             moveTimer = 0f;
             inputReceived = false;
         }
