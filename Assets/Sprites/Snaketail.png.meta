@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d4743feff56c6eb4ca9c0c74eaf36f2b
+guid: 19c1022f996c75b448d5a97db5247d13
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4797765463206591542
-    second: Snakebody2_0
+      213: 2451958051744684298
+    second: Snaketail_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 32
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,12 +100,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Snakebody2_0
+      name: Snaketail_0
       rect:
         serializedVersion: 2
-        x: 3
+        x: 5
         y: 0
-        width: 26
+        width: 22
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 63cf016e446159240800000000000000
-      internalID: 4797765463206591542
+      spriteID: a0996666bda170220800000000000000
+      internalID: 2451958051744684298
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Snakebody2_0: 4797765463206591542
+      Snaketail_0: 2451958051744684298
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

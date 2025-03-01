@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &636890863578870492
+--- !u!1 &284616799625888644
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8589585220643687682}
-  - component: {fileID: 1802725224434813284}
+  - component: {fileID: 2831583664037939764}
+  - component: {fileID: 1505779513310197766}
   m_Layer: 0
-  m_Name: SegmentPrefabSprite
+  m_Name: SegmentRender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8589585220643687682
+--- !u!4 &2831583664037939764
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 636890863578870492}
+  m_GameObject: {fileID: 284616799625888644}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,13 +32,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4607053639596530560}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1802725224434813284
+--- !u!212 &1505779513310197766
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 636890863578870492}
+  m_GameObject: {fileID: 284616799625888644}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -97,6 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4607053639596530560}
   - component: {fileID: 8109196139095778932}
+  - component: {fileID: 7737274483185776244}
   m_Layer: 0
   m_Name: SegmentPrefab
   m_TagString: SnakeBody
@@ -117,7 +118,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8589585220643687682}
+  - {fileID: 2831583664037939764}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &8109196139095778932
@@ -166,3 +167,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.95, y: 0.95}
   m_EdgeRadius: 0
+--- !u!114 &7737274483185776244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331771199366504045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d44ea0d2adffe5549bb300681ce043b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  straightSprite: {fileID: -2466491800782260184, guid: 26ce457b86615494fbc6fab03a2c9836, type: 3}
+  cornerSprite: {fileID: -4628694940934487476, guid: 8701b95c3b8714a4f828b2e43d4cac90, type: 3}
+  tailSprite: {fileID: 2451958051744684298, guid: 19c1022f996c75b448d5a97db5247d13, type: 3}
+  spriteObject: {fileID: 284616799625888644}
+  direction: 6
