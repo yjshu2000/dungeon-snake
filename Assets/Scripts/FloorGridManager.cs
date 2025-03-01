@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class FloorGridManager : MonoBehaviour {
@@ -156,6 +157,7 @@ public class FloorGridManager : MonoBehaviour {
 
     public void RemoveAllWall() {
         foreach (Vector2Int wallPosition in wallPositions) {
+            if (!wallGridMap.ContainsKey(wallPosition)) continue;
             Destroy(wallGridMap[wallPosition]);
             wallGridMap.Remove(wallPosition);
             // remove game object from scene
@@ -169,6 +171,7 @@ public class FloorGridManager : MonoBehaviour {
 
     public void RemoveAllTiles() {
         foreach (Vector2Int tilePosition in tilePositions) {
+            if (!gridMap.ContainsKey(tilePosition)) continue;
             Destroy(gridMap[tilePosition]);
             gridMap.Remove(tilePosition);
             // remove game object from scene

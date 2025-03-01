@@ -37,6 +37,7 @@ public class SnakeMovement : MonoBehaviour
         SnakeHP = defaultSnakeHP;
 
         headSpriteTransform = transform.GetComponentInChildren<SpriteRenderer>().transform;
+        headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
     }
 
     void Update() {
@@ -54,6 +55,9 @@ public class SnakeMovement : MonoBehaviour
     }
 
     void HandleInput() {
+        if (!IsAlive) {
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.UpArrow) && direction != Vector2Int.down && direction != Vector2Int.up) {
             direction = Vector2Int.up;
             inputReceived = true;
@@ -108,8 +112,28 @@ public class SnakeMovement : MonoBehaviour
             // Move the head in the current direction
             transform.position += new Vector3(direction.x * gridSize.x, direction.y * gridSize.y, 0);
 
+            UpdateBodySprites();
+
             moveTimer = 0f;
         }
+    }
+
+    private void UpdateBodySprites() {
+        // Use the updated position to update the sprite direction from the second to the last segment
+            for (int i = 1; i <= snakeSegments.Count - 1; i++) {
+                Vector2Int prevSegmentPos = new Vector2Int((int)snakeSegments[i - 1].position.x, (int)snakeSegments[i - 1].position.y);
+                    Vector2Int thisSegmentPos = new Vector2Int((int)snakeSegments[i].position.x, (int)snakeSegments[i].position.y);
+                if (i == snakeSegments.Count - 1) {
+                    // this is the last segment
+                    // Set the sprite direction for the tail segment
+                    snakeSegments[i].GetComponent<SegmentDirection>().SetSpriteDirectionTail(thisSegmentPos, prevSegmentPos);
+                }
+                else {
+                    Vector2Int nextSegmentPos = new Vector2Int((int)snakeSegments[i + 1].position.x, (int)snakeSegments[i + 1].position.y);
+                    // Set the sprite direction for the body segment
+                    snakeSegments[i].GetComponent<SegmentDirection>().SetSpriteDirectionBody(prevSegmentPos, thisSegmentPos, nextSegmentPos);
+                }
+            }
     }
 
     private bool IsMovingIntoWall() {
@@ -187,6 +211,7 @@ public class SnakeMovement : MonoBehaviour
         IsAlive = true;
         IsMoving = false;
         SnakeHP = defaultSnakeHP;
+        headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
     }
 
     private void RotateHeadSprite() {

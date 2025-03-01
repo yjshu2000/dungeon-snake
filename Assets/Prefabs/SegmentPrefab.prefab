@@ -179,8 +179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44ea0d2adffe5549bb300681ce043b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  straightSprite: {fileID: -2466491800782260184, guid: 26ce457b86615494fbc6fab03a2c9836, type: 3}
-  cornerSprite: {fileID: -4628694940934487476, guid: 8701b95c3b8714a4f828b2e43d4cac90, type: 3}
-  tailSprite: {fileID: 2451958051744684298, guid: 19c1022f996c75b448d5a97db5247d13, type: 3}
+  straightSprite: {fileID: 21300000, guid: 26ce457b86615494fbc6fab03a2c9836, type: 3}
+  cornerSprite: {fileID: 21300000, guid: 8701b95c3b8714a4f828b2e43d4cac90, type: 3}
+  tailSprite: {fileID: 21300000, guid: 19c1022f996c75b448d5a97db5247d13, type: 3}
   spriteObject: {fileID: 284616799625888644}
-  direction: 6
+  direction: 7
