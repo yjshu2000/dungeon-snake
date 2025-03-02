@@ -111,13 +111,15 @@ public class SnakeMovement : MonoBehaviour
             }
             // Move the head in the current direction
             transform.position += new Vector3(direction.x * gridSize.x, direction.y * gridSize.y, 0);
-
+            // Update the sprite direction of the body segments
             UpdateBodySprites();
 
             moveTimer = 0f;
         }
     }
 
+    // Goes through every segment after the head to update the sprite direction
+    // The segment has function which can calculate the direction based on the previous, current and next segment
     private void UpdateBodySprites() {
         // Use the updated position to update the sprite direction from the second to the last segment
             for (int i = 1; i <= snakeSegments.Count - 1; i++) {

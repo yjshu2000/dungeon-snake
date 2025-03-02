@@ -182,5 +182,6 @@ MonoBehaviour:
   straightSprite: {fileID: 21300000, guid: 26ce457b86615494fbc6fab03a2c9836, type: 3}
   cornerSprite: {fileID: 21300000, guid: 8701b95c3b8714a4f828b2e43d4cac90, type: 3}
   tailSprite: {fileID: 21300000, guid: 19c1022f996c75b448d5a97db5247d13, type: 3}
+  coilSprite: {fileID: 21300000, guid: 0a8016ded1c2ff349932c768a0774018, type: 3}
   spriteObject: {fileID: 284616799625888644}
   direction: 7

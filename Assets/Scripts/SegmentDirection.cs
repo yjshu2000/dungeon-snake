@@ -17,6 +17,7 @@ public class SegmentDirection : MonoBehaviour
     // tail bottom
     // tail left
     // the direction is the side that connects to the previous segment (towards the head)
+    // coil is used for when new segments are created and stacked on the same position
     public enum Direction
     {
         STRAIGHT_VERTICAL,
@@ -28,7 +29,8 @@ public class SegmentDirection : MonoBehaviour
         TAIL_UP,
         TAIL_RIGHT,
         TAIL_DOWN,
-        TAIL_LEFT
+        TAIL_LEFT,
+        COIL
     }
 
     // the three different sprites for the body
@@ -37,6 +39,7 @@ public class SegmentDirection : MonoBehaviour
     public Sprite straightSprite;
     public Sprite cornerSprite;
     public Sprite tailSprite;
+    public Sprite coilSprite;
 
     // the sprite being displayed
     public GameObject spriteObject;
@@ -44,7 +47,6 @@ public class SegmentDirection : MonoBehaviour
 
     // the direction of the segment
     public Direction direction;
-    private Direction lastDirection;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -56,16 +58,7 @@ public class SegmentDirection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (direction != lastDirection)
-        {
-            SpriteRotator(direction);
-            lastDirection = direction;
-        }
-    }
-
-    void Awake()
-    {
-        lastDirection = direction;
+        SpriteRotator(direction);
     }
 
     // Have snake call this function to update the sprite direction as the snake moves
@@ -78,6 +71,7 @@ public class SegmentDirection : MonoBehaviour
         {
             case Direction.STRAIGHT_VERTICAL:
                 spriteRenderer.sprite = straightSprite;
+                spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
                 break;
             case Direction.STRAIGHT_HORIZONTAL:
                 spriteRenderer.sprite = straightSprite;
@@ -115,35 +109,28 @@ public class SegmentDirection : MonoBehaviour
                 spriteRenderer.sprite = tailSprite;
                 spriteObject.transform.rotation = Quaternion.Euler(0, 0, 90);
                 break;
+            case Direction.COIL:
+                spriteRenderer.sprite = coilSprite;
+                spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
         }
     }
 
     private Direction CalculateBodyDirection(Vector2Int prevSegmentPos, Vector2Int thisSegmentPos, Vector2Int nextSegmentPos)
     {
-        // var from = (thisSegmentPos.x - prevSegmentPos.x, thisSegmentPos.y - prevSegmentPos.y);
-        // var to = (thisSegmentPos.x - nextSegmentPos.x, thisSegmentPos.y - nextSegmentPos.y);
-        Vector2Int from = new Vector2Int(prevSegmentPos.x - thisSegmentPos.x, prevSegmentPos.y - thisSegmentPos.y);
-        Vector2Int to = new Vector2Int(nextSegmentPos.x - thisSegmentPos.x, nextSegmentPos.y - thisSegmentPos.y);
-        // 0, 0 = same spot
-        // 0, 1 = down
-        // 0, -1 = up
-        // 1, 0 = left
-        // // -1, 0 = right
-        // var up = (0, -1);
-        // var down = (0, 1);
-        // var right = (-1, 0);
-        // var left = (1, 0);
-        
-        // if this segment is on the exact same spot as the previous segment, then it is stacked on top of the previous segment
-        // display tail
-        // if (from == (0, 0))
-        //     return Direction.TAIL_UP;
+        Vector2Int from = new(prevSegmentPos.x - thisSegmentPos.x, prevSegmentPos.y - thisSegmentPos.y);
+        Vector2Int to = new(nextSegmentPos.x - thisSegmentPos.x, nextSegmentPos.y - thisSegmentPos.y);
 
+        // same position
+        if (prevSegmentPos == thisSegmentPos) return Direction.COIL;
+
+        // straight
         if (from == Vector2Int.up && to == Vector2Int.down) return Direction.STRAIGHT_VERTICAL;
         if (from == Vector2Int.down && to == Vector2Int.up) return Direction.STRAIGHT_VERTICAL;
         if (from == Vector2Int.left && to == Vector2Int.right) return Direction.STRAIGHT_HORIZONTAL;
         if (from == Vector2Int.right && to == Vector2Int.left) return Direction.STRAIGHT_HORIZONTAL;
 
+        // corner
         if (from == Vector2Int.down && to == Vector2Int.right) return Direction.CORNER_DOWN_RIGHT;
         if (from == Vector2Int.down && to == Vector2Int.left) return Direction.CORNER_DOWN_LEFT;
         if (from == Vector2Int.up && to == Vector2Int.right) return Direction.CORNER_UP_RIGHT;
@@ -160,6 +147,7 @@ public class SegmentDirection : MonoBehaviour
 
     private Direction CalculateTailDirection(Vector2Int thisSegmentPos, Vector2Int prevSegmentPos)
     {
+        if (prevSegmentPos == thisSegmentPos) return Direction.COIL;
         switch ((prevSegmentPos.x - thisSegmentPos.x, prevSegmentPos.y - thisSegmentPos.y))
         {
             case (< 0, _):
@@ -175,7 +163,7 @@ public class SegmentDirection : MonoBehaviour
             // this means the previous segment is above this segment
                 return Direction.TAIL_UP;
             default:
-                return Direction.TAIL_RIGHT;
+                return Direction.COIL;
         }
     }
 }
