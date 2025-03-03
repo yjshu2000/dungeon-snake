@@ -8,8 +8,7 @@ public class CanvasManager : MonoBehaviour
     private GameObject gameOverPanel;
     public TMPro.TextMeshProUGUI snakeHPValueText; // Assign in Unity Inspector
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+    void Start() {
         // get the canvas object
         canvas = GameObject.Find("Canvas");
         gameStartPanel = canvas.transform.Find("GameStartPanel").gameObject;
