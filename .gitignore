@@ -70,3 +70,9 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Ignore TextMesh Pro auto-generated files
+TextMesh Pro/
+Packages/com.unity.textmeshpro/
+Assets/TextMesh Pro/*
+!Assets/TextMesh Pro/*.asset  # Keep essential TMP settings
