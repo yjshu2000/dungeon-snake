@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     public bool gameReady = true;
     public bool gameInProgress = false;
     public bool gameOver = false;
@@ -55,7 +54,8 @@ public class GameManager : MonoBehaviour
         }
 
         canvasManager.GetComponent<CanvasManager>().SetSnakeLength(snake.GetComponent<SnakeMovement>().GetSnakeLength());
-        canvasManager.GetComponent<CanvasManager>().SetSnakeLifePoints(snake.GetComponent<SnakeMovement>().SnakeHP);
+        canvasManager.GetComponent<CanvasManager>().SetSnakeHP(snake.GetComponent<SnakeMovement>().SnakeHP);
+        canvasManager.GetComponent<CanvasManager>().SetHealthBar(snake.GetComponent<SnakeMovement>().SnakeHP, 3);
 
         if (gameReady) {
             canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();

@@ -1,12 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class CanvasManager : MonoBehaviour
-{
+public class CanvasManager : MonoBehaviour {
     private GameObject canvas;
     private GameObject gameStartPanel;
     private GameObject gameInProgressPanel;
     private GameObject gameOverPanel;
-    public TMPro.TextMeshProUGUI snakeHPValueText; // Assign in Unity Inspector
+    public TMPro.TextMeshProUGUI snakeHPValueText; // Assigned
+    public Slider healthBar; // Assigned
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         // get the canvas object
@@ -14,6 +16,11 @@ public class CanvasManager : MonoBehaviour
         gameStartPanel = canvas.transform.Find("GameStartPanel").gameObject;
         gameInProgressPanel = canvas.transform.Find("GameInProgressPanel").gameObject;
         gameOverPanel = canvas.transform.Find("GameOverPanel").gameObject;
+
+        if (healthBar == null) {
+            healthBar = canvas.transform.Find("GameInProgressPanel/HealthBar")?.GetComponent<Slider>();
+        }
+
         HideAllPanels();
     }
 
@@ -51,11 +58,17 @@ public class CanvasManager : MonoBehaviour
         lengthValueText.GetComponent<TMPro.TextMeshProUGUI>().text = length.ToString();
     }
 
-    public void SetSnakeLifePoints(int HP) {
+    public void SetSnakeHP(int HP) {
         // change the text of GameInProgressPanel -> SnakeHPLabelText -> SnakeHPValueText
         GameObject lifePointsLabelText = gameInProgressPanel.transform.Find("SnakeHPLabelText").gameObject;
         GameObject lifePointsValueText = lifePointsLabelText.transform.Find("SnakeHPValueText").gameObject;
         lifePointsValueText.GetComponent<TMPro.TextMeshProUGUI>().text = HP.ToString();
+    }
+
+    public void SetHealthBar(float currentHP, float maxHP) {
+        if (healthBar != null) {
+            healthBar.value = currentHP / maxHP; // Normalize HP (0 to 1)
+        }
     }
 
 

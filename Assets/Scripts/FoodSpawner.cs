@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodSpawner : MonoBehaviour
-{
+public class FoodSpawner : MonoBehaviour {
     public GameObject foodPrefab;
     private FloorGridManager floorGridManager;
     private SnakeMovement snake;

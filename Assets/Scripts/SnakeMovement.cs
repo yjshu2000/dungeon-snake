@@ -3,8 +3,7 @@ using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SnakeMovement : MonoBehaviour
-{
+public class SnakeMovement : MonoBehaviour {
     private float moveTimer = 0f;
     public float moveInterval = 0.2f; // Time between movement steps
     public float moveSpeed = 5f; // Speed of movement
