@@ -1,9 +1,13 @@
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    public bool gameReady = true;
-    public bool gameInProgress = false;
-    public bool gameOver = false;
+    public enum GameState {
+        Start,
+        Playing,
+        Paused,
+        GameOver
+    }
+    public GameState gameState = GameState.Start;
     public GameObject canvasManager;
 
     public GameObject snake;
@@ -11,14 +15,12 @@ public class GameManager : MonoBehaviour {
     public GameObject foodManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+    void Start() {
 
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         // testing UI
         // if (Input.GetKeyDown(KeyCode.Alpha1)) {
         //     canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();
@@ -34,34 +36,30 @@ public class GameManager : MonoBehaviour {
             snake.GetComponent<SnakeMovement>().ResetSnake();
             foodManager.GetComponent<FoodSpawner>().ResetFood();
             canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();
-            gameReady = true;
-            gameInProgress = false;
-            gameOver = false;
+            gameState = GameState.Start;
         }
 
-        // if snake is moving, set gameInProgress to true
+        // if snake is moving, set gameState to playing
         if (snake.GetComponent<SnakeMovement>().IsMoving) {
-            gameInProgress = true;
-            gameReady = false;
-            gameOver = false;
+            gameState = GameState.Playing;
         }
 
-        // if snake is dead, set gameOver to true
+        // if snake is dead, set gameState to game over
         if (!snake.GetComponent<SnakeMovement>().IsAlive) {
-            gameInProgress = false;
-            gameReady = false;
-            gameOver = true;
+            gameState = GameState.GameOver;
         }
 
         canvasManager.GetComponent<CanvasManager>().SetSnakeLength(snake.GetComponent<SnakeMovement>().GetSnakeLength());
         canvasManager.GetComponent<CanvasManager>().SetSnakeHP(snake.GetComponent<SnakeMovement>().SnakeHP);
         canvasManager.GetComponent<CanvasManager>().SetHealthBar(snake.GetComponent<SnakeMovement>().SnakeHP, 3);
 
-        if (gameReady) {
+        if (gameState == GameState.Start) {
             canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();
-        } else if (gameInProgress) {
+        }
+        else if (gameState == GameState.Playing) {
             canvasManager.GetComponent<CanvasManager>().ShowGameInProgressPanel();
-        } else if (gameOver) {
+        }
+        else if (gameState == GameState.GameOver) {
             canvasManager.GetComponent<CanvasManager>().ShowGameOverPanel();
         }
     }
