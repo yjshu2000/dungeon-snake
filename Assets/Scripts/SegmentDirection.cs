@@ -115,7 +115,7 @@ public class SegmentDirection : MonoBehaviour {
         Vector2Int to = new(nextSegmentPos.x - thisSegmentPos.x, nextSegmentPos.y - thisSegmentPos.y);
 
         // same position
-        if (prevSegmentPos == thisSegmentPos) return Direction.COIL;
+        if (thisSegmentPos == nextSegmentPos) return Direction.COIL;
 
         // straight
         if (from == Vector2Int.up && to == Vector2Int.down) return Direction.STRAIGHT_VERTICAL;
@@ -133,9 +133,8 @@ public class SegmentDirection : MonoBehaviour {
         if (from == Vector2Int.right && to == Vector2Int.down) return Direction.CORNER_DOWN_RIGHT;
         if (from == Vector2Int.right && to == Vector2Int.up) return Direction.CORNER_UP_RIGHT;
 
-
-        Debug.Log("where am i going");
-        return Direction.STRAIGHT_VERTICAL;
+        Debug.Log("where am i going" + "\n" + prevSegmentPos + "  " + thisSegmentPos + "  " + nextSegmentPos);
+        return Direction.COIL;
     }
 
     private Direction CalculateTailDirection(Vector2Int thisSegmentPos, Vector2Int prevSegmentPos) {

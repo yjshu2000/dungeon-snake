@@ -4,33 +4,25 @@ using UnityEngine.UI;
 using static GameConstants;
 
 public class CanvasManager : MonoBehaviour {
-    private GameObject canvas;
+    private GameObject canvas; //somehow there's no way to make this public. wtf.
     private Dictionary<string, GameObject> panels = new Dictionary<string, GameObject>();
-
-    public TMPro.TextMeshProUGUI snakeHPValueText; // Assigned
-    public Slider healthBar; // Assigned
+    private Slider healthBar;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-        // get the canvas object
         canvas = GameObject.Find("Canvas");
-        InitializePanels();
+
+        panels[GameStartPanel] = canvas.transform.Find(GameStartPanel).gameObject;
+        panels[GameInProgressPanel] = canvas.transform.Find(GameInProgressPanel).gameObject;
+        panels[GameOverPanel] = canvas.transform.Find(GameOverPanel).gameObject;
+
+        healthBar = panels[GameInProgressPanel].transform.Find("HealthBar")?.GetComponent<Slider>();
         HideAllPanels();
     }
 
     // Update is called once per frame
     void Update() {
         
-    }
-
-    private void InitializePanels() {
-        panels[GameStartPanel] = canvas.transform.Find(GameStartPanel).gameObject;
-        panels[GameInProgressPanel] = canvas.transform.Find(GameInProgressPanel).gameObject;
-        panels[GameOverPanel] = canvas.transform.Find(GameOverPanel).gameObject;
-
-        if (healthBar == null) {
-            healthBar = panels[GameInProgressPanel].transform.Find("HealthBar")?.GetComponent<Slider>();
-        }
     }
 
     private void HideAllPanels() {
@@ -43,6 +35,9 @@ public class CanvasManager : MonoBehaviour {
         if (panels.ContainsKey(panelName)) {
             HideAllPanels();
             panels[panelName].SetActive(true);
+            if (panelName == GameOverPanel) {
+                panels[GameInProgressPanel].SetActive(true);
+            }
         }
     }
     

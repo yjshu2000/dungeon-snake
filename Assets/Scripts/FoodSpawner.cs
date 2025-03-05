@@ -31,6 +31,10 @@ public class FoodSpawner : MonoBehaviour {
         if (foodPosition != Vector2Int.zero) {
             Instantiate(foodPrefab, new Vector3(foodPosition.x, foodPosition.y, 0), Quaternion.identity);
         }
+        else {
+            Debug.Log("No food was spawned??");
+            SpawnFood();
+        }
     }
 
     public void ResetFood() {
