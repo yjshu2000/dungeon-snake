@@ -3,13 +3,16 @@ using UnityEngine;
 
 public class FoodSpawner : MonoBehaviour {
     public GameObject foodPrefab;
+
+    public GameObject floorGridManagerObject;
+    public GameObject snakeObject;
     private FloorGridManager floorGridManager;
     private SnakeMovement snake;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-        floorGridManager = FindAnyObjectByType<FloorGridManager>();
-        snake = FindAnyObjectByType<SnakeMovement>();
+        floorGridManager = floorGridManagerObject.GetComponent<FloorGridManager>();
+        snake = snakeObject.GetComponent<SnakeMovement>();
         Instantiate(foodPrefab, new Vector3(3, 3, 0), Quaternion.identity);
     }
 

@@ -607,6 +607,8 @@ MonoBehaviour:
   growRate: 4
   gridSize: {x: 1, y: 1}
   segmentPrefab: {fileID: 1331771199366504045, guid: 950c3e17f7262fc4282263bbec38c458, type: 3}
+  foodSpawnerObject: {fileID: 949340145}
+  floorGridManagerObject: {fileID: 1221016997}
 --- !u!61 &864397733
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -756,6 +758,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodPrefab: {fileID: 6240340357629054496, guid: 60fccc1ecfed4de48ab977a85164d603, type: 3}
+  floorGridManagerObject: {fileID: 1221016997}
+  snakeObject: {fileID: 864397729}
 --- !u!4 &949340147
 Transform:
   m_ObjectHideFlags: 0
@@ -926,13 +930,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29089b16a714e0247a1bed564a6ea5d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameReady: 1
-  gameInProgress: 0
-  gameOver: 0
-  canvasManager: {fileID: 949255837}
-  snake: {fileID: 864397729}
-  floorGridManager: {fileID: 1221016997}
-  foodManager: {fileID: 949340145}
+  gameState: 0
+  canvasManagerObject: {fileID: 949255837}
+  snakeObject: {fileID: 864397729}
+  floorGridManagerObject: {fileID: 1221016997}
+  foodManagerObject: {fileID: 949340145}
 --- !u!4 &1823253548
 Transform:
   m_ObjectHideFlags: 0

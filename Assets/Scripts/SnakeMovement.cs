@@ -16,6 +16,8 @@ public class SnakeMovement : MonoBehaviour {
     public GameObject segmentPrefab; // Prefab for a single snake segment
     private List<Transform> snakeSegments = new List<Transform>(); // List of snake body segments
 
+    public GameObject foodSpawnerObject;
+    public GameObject floorGridManagerObject;
     private FoodSpawner foodSpawner;
     private FloorGridManager floorGridManager;
 
@@ -29,8 +31,8 @@ public class SnakeMovement : MonoBehaviour {
         snakeSegments.Add(transform); // Add head as first segment, then add 1 body segment
         GameObject firstSegment = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         snakeSegments.Add(firstSegment.transform);
-        foodSpawner = FindAnyObjectByType<FoodSpawner>();
-        floorGridManager = FindAnyObjectByType<FloorGridManager>();
+        foodSpawner = foodSpawnerObject.GetComponent<FoodSpawner>();
+        floorGridManager = floorGridManagerObject.GetComponent<FloorGridManager>();
         IsAlive = true;
         IsMoving = false;
         SnakeHP = defaultSnakeHP;

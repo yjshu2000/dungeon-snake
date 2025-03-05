@@ -8,59 +8,67 @@ public class GameManager : MonoBehaviour {
         GameOver
     }
     public GameState gameState = GameState.Start;
-    public GameObject canvasManager;
 
-    public GameObject snake;
-    public GameObject floorGridManager;
-    public GameObject foodManager;
+    public GameObject canvasManagerObject;
+    public GameObject snakeObject;
+    public GameObject floorGridManagerObject;
+    public GameObject foodManagerObject;
+
+    private CanvasManager canvasManager;
+    private SnakeMovement snakeMovement;
+    private FloorGridManager floorGridManager;
+    private FoodSpawner foodSpawner;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-
+        canvasManager = canvasManagerObject.GetComponent<CanvasManager>();
+        snakeMovement = snakeObject.GetComponent<SnakeMovement>();
+        floorGridManager = floorGridManagerObject.GetComponent<FloorGridManager>();
+        foodSpawner = foodManagerObject.GetComponent<FoodSpawner>();
     }
 
     // Update is called once per frame
     void Update() {
         // testing UI
         // if (Input.GetKeyDown(KeyCode.Alpha1)) {
-        //     canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();
+        //     canvasManagerComponent.ShowGameStartPanel();
         // }
         if (Input.GetKeyDown(KeyCode.Alpha2)) {
-            canvasManager.GetComponent<CanvasManager>().ShowGameInProgressPanel();
+            canvasManager.ShowGameInProgressPanel();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            canvasManager.GetComponent<CanvasManager>().ShowGameOverPanel();
+            canvasManager.ShowGameOverPanel();
         }
         if (Input.GetKeyDown(KeyCode.R)) {
-            floorGridManager.GetComponent<FloorGridManager>().InitializeGrid();
-            snake.GetComponent<SnakeMovement>().ResetSnake();
-            foodManager.GetComponent<FoodSpawner>().ResetFood();
-            canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();
+            floorGridManager.InitializeGrid();
+            snakeMovement.ResetSnake();
+            foodSpawner.ResetFood();
+            canvasManager.ShowGameStartPanel();
             gameState = GameState.Start;
         }
 
         // if snake is moving, set gameState to playing
-        if (snake.GetComponent<SnakeMovement>().IsMoving) {
+        if (snakeMovement.IsMoving) {
             gameState = GameState.Playing;
         }
 
         // if snake is dead, set gameState to game over
-        if (!snake.GetComponent<SnakeMovement>().IsAlive) {
+        if (!snakeMovement.IsAlive) {
             gameState = GameState.GameOver;
         }
 
-        canvasManager.GetComponent<CanvasManager>().SetSnakeLength(snake.GetComponent<SnakeMovement>().GetSnakeLength());
-        canvasManager.GetComponent<CanvasManager>().SetSnakeHP(snake.GetComponent<SnakeMovement>().SnakeHP);
-        canvasManager.GetComponent<CanvasManager>().SetHealthBar(snake.GetComponent<SnakeMovement>().SnakeHP, 3);
+        canvasManager.SetSnakeLength(snakeMovement.GetSnakeLength());
+        canvasManager.SetSnakeHP(snakeMovement.SnakeHP);
+        canvasManager.SetHealthBar(snakeMovement.SnakeHP, 3);
 
         if (gameState == GameState.Start) {
-            canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();
+            canvasManager.ShowGameStartPanel();
         }
         else if (gameState == GameState.Playing) {
-            canvasManager.GetComponent<CanvasManager>().ShowGameInProgressPanel();
+            canvasManager.ShowGameInProgressPanel();
         }
         else if (gameState == GameState.GameOver) {
-            canvasManager.GetComponent<CanvasManager>().ShowGameOverPanel();
+            canvasManager.ShowGameOverPanel();
         }
     }
 }
