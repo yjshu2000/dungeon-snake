@@ -1,4 +1,5 @@
 using UnityEngine;
+using static GameConstants;
 
 public class GameManager : MonoBehaviour {
     public enum GameState {
@@ -34,16 +35,16 @@ public class GameManager : MonoBehaviour {
         //     canvasManagerComponent.ShowGameStartPanel();
         // }
         if (Input.GetKeyDown(KeyCode.Alpha2)) {
-            canvasManager.ShowGameInProgressPanel();
+            canvasManager.ShowPanel(GameInProgressPanel);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            canvasManager.ShowGameOverPanel();
+            canvasManager.ShowPanel(GameOverPanel);
         }
         if (Input.GetKeyDown(KeyCode.R)) {
             floorGridManager.InitializeGrid();
             snakeMovement.ResetSnake();
             foodSpawner.ResetFood();
-            canvasManager.ShowGameStartPanel();
+            canvasManager.ShowPanel(GameStartPanel);
             gameState = GameState.Start;
         }
 
@@ -62,13 +63,13 @@ public class GameManager : MonoBehaviour {
         canvasManager.SetHealthBar(snakeMovement.SnakeHP, 3);
 
         if (gameState == GameState.Start) {
-            canvasManager.ShowGameStartPanel();
+            canvasManager.ShowPanel(GameStartPanel);
         }
         else if (gameState == GameState.Playing) {
-            canvasManager.ShowGameInProgressPanel();
+            canvasManager.ShowPanel(GameInProgressPanel);
         }
         else if (gameState == GameState.GameOver) {
-            canvasManager.ShowGameOverPanel();
+            canvasManager.ShowPanel(GameOverPanel);
         }
     }
 }

@@ -1,11 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameConstants;
 
 public class CanvasManager : MonoBehaviour {
     private GameObject canvas;
-    private GameObject gameStartPanel;
-    private GameObject gameInProgressPanel;
-    private GameObject gameOverPanel;
+    private Dictionary<string, GameObject> panels = new Dictionary<string, GameObject>();
+
     public TMPro.TextMeshProUGUI snakeHPValueText; // Assigned
     public Slider healthBar; // Assigned
 
@@ -13,14 +14,7 @@ public class CanvasManager : MonoBehaviour {
     void Start() {
         // get the canvas object
         canvas = GameObject.Find("Canvas");
-        gameStartPanel = canvas.transform.Find("GameStartPanel").gameObject;
-        gameInProgressPanel = canvas.transform.Find("GameInProgressPanel").gameObject;
-        gameOverPanel = canvas.transform.Find("GameOverPanel").gameObject;
-
-        if (healthBar == null) {
-            healthBar = canvas.transform.Find("GameInProgressPanel/HealthBar")?.GetComponent<Slider>();
-        }
-
+        InitializePanels();
         HideAllPanels();
     }
 
@@ -29,38 +23,39 @@ public class CanvasManager : MonoBehaviour {
         
     }
 
+    private void InitializePanels() {
+        panels[GameStartPanel] = canvas.transform.Find(GameStartPanel).gameObject;
+        panels[GameInProgressPanel] = canvas.transform.Find(GameInProgressPanel).gameObject;
+        panels[GameOverPanel] = canvas.transform.Find(GameOverPanel).gameObject;
+
+        if (healthBar == null) {
+            healthBar = panels[GameInProgressPanel].transform.Find("HealthBar")?.GetComponent<Slider>();
+        }
+    }
+
     private void HideAllPanels() {
-        gameStartPanel.SetActive(false);
-        gameInProgressPanel.SetActive(false);
-        gameOverPanel.SetActive(false);
+        foreach (var panel in panels.Values) {
+            panel.SetActive(false);
+        }
     }
 
-    public void ShowGameStartPanel() {
-        HideAllPanels();
-        gameStartPanel.SetActive(true);
-    }
-
-    public void ShowGameInProgressPanel() {
-        HideAllPanels();
-        gameInProgressPanel.SetActive(true);
-    }
-
-    public void ShowGameOverPanel() {
-        HideAllPanels();
-        gameOverPanel.SetActive(true);
-        gameInProgressPanel.SetActive(true);
+    public void ShowPanel(string panelName) {
+        if (panels.ContainsKey(panelName)) {
+            HideAllPanels();
+            panels[panelName].SetActive(true);
+        }
     }
     
     public void SetSnakeLength(int length) {
         // change the text of GameInProgressPanel -> LengthLabelText -> LengthValueText
-        GameObject lengthLabelText = gameInProgressPanel.transform.Find("LengthLabelText").gameObject;
+        GameObject lengthLabelText = panels[GameInProgressPanel].transform.Find("LengthLabelText").gameObject;
         GameObject lengthValueText = lengthLabelText.transform.Find("LengthValueText").gameObject;
         lengthValueText.GetComponent<TMPro.TextMeshProUGUI>().text = length.ToString();
     }
 
     public void SetSnakeHP(int HP) {
         // change the text of GameInProgressPanel -> SnakeHPLabelText -> SnakeHPValueText
-        GameObject lifePointsLabelText = gameInProgressPanel.transform.Find("SnakeHPLabelText").gameObject;
+        GameObject lifePointsLabelText = panels[GameInProgressPanel].transform.Find("SnakeHPLabelText").gameObject;
         GameObject lifePointsValueText = lifePointsLabelText.transform.Find("SnakeHPValueText").gameObject;
         lifePointsValueText.GetComponent<TMPro.TextMeshProUGUI>().text = HP.ToString();
     }
