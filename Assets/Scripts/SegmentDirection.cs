@@ -58,8 +58,13 @@ public class SegmentDirection : MonoBehaviour {
     }
 
     // Have snake call this function to update the sprite direction as the snake moves
-    public void SetSpriteDirectionBody(Vector2Int prevSegmentPos, Vector2Int thisSegmentPos, Vector2Int nextSegmentPos) => direction = CalculateBodyDirection(prevSegmentPos, thisSegmentPos, nextSegmentPos);
-    public void SetSpriteDirectionTail(Vector2Int thisSegmentPos, Vector2Int prevSegmentPos) => direction = CalculateTailDirection(thisSegmentPos, prevSegmentPos);
+    public void SetSpriteDirectionBody(Vector2Int prevSegmentPos, Vector2Int thisSegmentPos, Vector2Int nextSegmentPos) {
+        direction = CalculateBodyDirection(prevSegmentPos, thisSegmentPos, nextSegmentPos);
+    }
+
+    public void SetSpriteDirectionTail(Vector2Int thisSegmentPos, Vector2Int prevSegmentPos) {
+        direction = CalculateTailDirection(thisSegmentPos, prevSegmentPos);
+    }
 
     private void SpriteRotator(Direction direction) {
         switch (direction) {

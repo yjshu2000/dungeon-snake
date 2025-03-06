@@ -10,6 +10,7 @@ public class SnakeMovement : MonoBehaviour {
     public int growRate = 4; // Number of segments to grow by when eating food
     public Vector2Int gridSize = new Vector2Int(1, 1); // Grid size
     private Vector2Int direction = Vector2Int.zero; // Default direction
+    private int initialSnakeSize = 3; // Initial body segments
 
     private bool inputReceived = false;
 
@@ -29,8 +30,11 @@ public class SnakeMovement : MonoBehaviour {
 
     void Start() {
         snakeSegments.Add(transform); // Add head as first segment, then add 1 body segment
-        GameObject firstSegment = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        snakeSegments.Add(firstSegment.transform);
+        GameObject firstSegments;
+        for (int i = 0; i < initialSnakeSize; i++) {
+            firstSegments = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            snakeSegments.Add(firstSegments.transform);
+        }
         foodSpawner = foodSpawnerObject.GetComponent<FoodSpawner>();
         floorGridManager = floorGridManagerObject.GetComponent<FloorGridManager>();
         IsAlive = true;
@@ -209,8 +213,11 @@ public class SnakeMovement : MonoBehaviour {
         snakeSegments.RemoveRange(1, snakeSegments.Count - 1);
         transform.position = new Vector3(1, 0, 0);
         direction = Vector2Int.zero;
-        GameObject firstSegment = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        snakeSegments.Add(firstSegment.transform);
+        GameObject firstSegments;
+        for (int i = 0; i < initialSnakeSize; i++) {
+            firstSegments = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            snakeSegments.Add(firstSegments.transform);
+        }
         IsAlive = true;
         IsMoving = false;
         SnakeHP = defaultSnakeHP;
