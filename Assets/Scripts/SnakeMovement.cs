@@ -2,16 +2,12 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
+using static GameConstants;
 
 public class SnakeMovement : MonoBehaviour {
     private float moveTimer = 0f;
-    public float moveInterval = 0.2f; // Time between movement steps
-    public float moveSpeed = 5f; // Speed of movement
-    public int growRate = 4; // Number of segments to grow by when eating food
-    public Vector2Int gridSize = new Vector2Int(1, 1); // Grid size
+    private Vector2Int gridSize = new Vector2Int(1, 1); // Grid size
     private Vector2Int direction = Vector2Int.zero; // Default direction
-    private int initialSnakeSize = 3; // Initial body segments
-
     private bool inputReceived = false;
 
     public GameObject segmentPrefab; // Prefab for a single snake segment
@@ -24,14 +20,13 @@ public class SnakeMovement : MonoBehaviour {
 
     public bool IsAlive { get; private set; } = true;
     public bool IsMoving { get; private set; } = false;
-    private int defaultSnakeHP = 3;
     public int SnakeHP { get; private set; }
     private Transform headSpriteTransform;
 
     void Start() {
         snakeSegments.Add(transform); // Add head as first segment, then add 1 body segment
         GameObject firstSegments;
-        for (int i = 0; i < initialSnakeSize; i++) {
+        for (int i = 0; i < InitialSnakeSize; i++) {
             firstSegments = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             snakeSegments.Add(firstSegments.transform);
         }
@@ -39,7 +34,7 @@ public class SnakeMovement : MonoBehaviour {
         floorGridManager = floorGridManagerObject.GetComponent<FloorGridManager>();
         IsAlive = true;
         IsMoving = false;
-        SnakeHP = defaultSnakeHP;
+        SnakeHP = SnakeMaxHP;
 
         headSpriteTransform = transform.GetComponentInChildren<SpriteRenderer>().transform;
         headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
@@ -50,7 +45,7 @@ public class SnakeMovement : MonoBehaviour {
 
         // TEST FUNCTION: Press 'G' to grow snake manually
         if (Input.GetKeyDown(KeyCode.G)) {
-            GrowSnake(growRate);
+            GrowSnake(GrowRate);
         }
     }
 
@@ -94,7 +89,7 @@ public class SnakeMovement : MonoBehaviour {
             return;
         }
         IsMoving = true;
-        if (moveTimer >= moveInterval || inputReceived == true) {
+        if (moveTimer >= MoveInterval || inputReceived == true) {
             inputReceived = false;
             if (IsMovingIntoWall()) {
                 Dead();
@@ -173,7 +168,7 @@ public class SnakeMovement : MonoBehaviour {
             Debug.Log("Hit a food!");
             Destroy(other.gameObject);
             foodSpawner.SpawnFood();
-            GrowSnake(growRate);
+            GrowSnake(GrowRate);
             floorGridManager.ExpandBoard();
         }
         else if (other.CompareTag("Wall")) {
@@ -214,13 +209,13 @@ public class SnakeMovement : MonoBehaviour {
         transform.position = new Vector3(1, 0, 0);
         direction = Vector2Int.zero;
         GameObject firstSegments;
-        for (int i = 0; i < initialSnakeSize; i++) {
+        for (int i = 0; i < InitialSnakeSize; i++) {
             firstSegments = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             snakeSegments.Add(firstSegments.transform);
         }
         IsAlive = true;
         IsMoving = false;
-        SnakeHP = defaultSnakeHP;
+        SnakeHP = SnakeMaxHP;
         headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
     }
 

@@ -2,12 +2,6 @@ using UnityEngine;
 using static GameConstants;
 
 public class GameManager : MonoBehaviour {
-    public enum GameState {
-        Start,
-        Playing,
-        Paused,
-        GameOver
-    }
     public GameState gameState = GameState.Start;
 
     public GameObject canvasManagerObject;

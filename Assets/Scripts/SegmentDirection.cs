@@ -2,6 +2,7 @@
 using System;
 using System.Security.Cryptography;
 using UnityEngine;
+using static GameConstants;
 
 public class SegmentDirection : MonoBehaviour {
     // the state of the body.
@@ -17,19 +18,6 @@ public class SegmentDirection : MonoBehaviour {
     // tail left
     // the direction is the side that connects to the previous segment (towards the head)
     // coil is used for when new segments are created and stacked on the same position
-    public enum Direction {
-        STRAIGHT_VERTICAL,
-        STRAIGHT_HORIZONTAL,
-        CORNER_UP_LEFT,
-        CORNER_UP_RIGHT,
-        CORNER_DOWN_LEFT,
-        CORNER_DOWN_RIGHT,
-        TAIL_UP,
-        TAIL_RIGHT,
-        TAIL_DOWN,
-        TAIL_LEFT,
-        COIL
-    }
 
     // the three different sprites for the body
     // there is straight, corner, and tail
