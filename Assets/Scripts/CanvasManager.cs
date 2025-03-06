@@ -18,6 +18,7 @@ public class CanvasManager : MonoBehaviour {
         //snakeObject = GameObject.Find("SnakeHead");
         snakeMovement = snakeObject.GetComponent<SnakeMovement>();
         snakeMovement.OnHPChanged += UpdateHealthUI;
+        snakeMovement.OnLengthChanged += SetSnakeLength; //might change to UpdateScore later
 
         canvas = GameObject.Find("Canvas");
         panels[GameStartPanel] = canvas.transform.Find(GameStartPanel).gameObject;
@@ -62,6 +63,7 @@ public class CanvasManager : MonoBehaviour {
     void OnDestroy() {
         if (snakeMovement != null) {
             snakeMovement.OnHPChanged -= UpdateHealthUI;
+            snakeMovement.OnLengthChanged -= SetSnakeLength; //might change this later
         }
     }
 

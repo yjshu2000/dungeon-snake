@@ -62,6 +62,7 @@ public class SnakeMovement : MonoBehaviour {
         IsAlive = true;
         IsMoving = false;
         SnakeHP = SnakeMaxHP;
+        SnakeLength = snakeSegments.Count;
 
         headSpriteTransform = transform.GetComponentInChildren<SpriteRenderer>().transform;
         headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
@@ -180,7 +181,7 @@ public class SnakeMovement : MonoBehaviour {
             snakeSegments.Add(newSegment.transform);
         }
         //we're gonna assume the snake length only ever grows... hopefully I don't regret this later.
-        //change length counter here. we'll track it separately and manually.
+        SnakeLength += segments;
     }
 
     public List<Vector2Int> GetSnakePositions() {
@@ -246,7 +247,7 @@ public class SnakeMovement : MonoBehaviour {
         IsAlive = true;
         IsMoving = false;
         SnakeHP = SnakeMaxHP;
-        //update snake length here
+        SnakeLength = snakeSegments.Count;
         headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
     }
 

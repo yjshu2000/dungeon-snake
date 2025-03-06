@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour {
             gameState = GameState.GameOver;
         }
 
-        canvasManager.SetSnakeLength(snakeMovement.GetSnakeLength());
         if (GameStateToPanelMap.TryGetValue(gameState, out string panelName)) {
             canvasManager.ShowPanel(panelName);
         }
