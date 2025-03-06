@@ -20,7 +20,17 @@ public class SnakeMovement : MonoBehaviour {
 
     public bool IsAlive { get; private set; } = true;
     public bool IsMoving { get; private set; } = false;
-    public int SnakeHP { get; private set; }
+    private int snakeHP;
+    public int SnakeHP {
+        get => snakeHP;
+        private set {
+            if (snakeHP != value) {
+                snakeHP = value;
+                OnHPChanged?.Invoke(snakeHP);
+            }
+        }
+    }
+    public event System.Action<int> OnHPChanged;
     private Transform headSpriteTransform;
 
     void Start() {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class GameConstants {
@@ -17,6 +18,13 @@ public static class GameConstants {
     public const string GameStartPanel = "GameStartPanel";
     public const string GameInProgressPanel = "GameInProgressPanel";
     public const string GameOverPanel = "GameOverPanel";
+
+    // GameState to Panel mapping
+    public static readonly Dictionary<GameState, string> GameStateToPanelMap = new Dictionary<GameState, string> {
+        { GameState.Start, GameStartPanel },
+        { GameState.Playing, GameInProgressPanel },
+        { GameState.GameOver, GameOverPanel }
+    };
 }
 
 public enum Direction {

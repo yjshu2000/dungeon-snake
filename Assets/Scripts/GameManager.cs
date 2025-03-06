@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using static GameConstants;
 
@@ -53,17 +54,12 @@ public class GameManager : MonoBehaviour {
         }
 
         canvasManager.SetSnakeLength(snakeMovement.GetSnakeLength());
-        canvasManager.SetSnakeHP(snakeMovement.SnakeHP);
-        canvasManager.SetHealthBar(snakeMovement.SnakeHP, 3);
+        //canvasManager.SetSnakeHP(snakeMovement.SnakeHP);
+        //canvasManager.SetHealthBar(snakeMovement.SnakeHP, SnakeMaxHP);
 
-        if (gameState == GameState.Start) {
-            canvasManager.ShowPanel(GameStartPanel);
-        }
-        else if (gameState == GameState.Playing) {
-            canvasManager.ShowPanel(GameInProgressPanel);
-        }
-        else if (gameState == GameState.GameOver) {
-            canvasManager.ShowPanel(GameOverPanel);
+        // tentatively changing to events for HP. moved to CanvasManager.cs
+        if (GameStateToPanelMap.TryGetValue(gameState, out string panelName)) {
+            canvasManager.ShowPanel(panelName);
         }
     }
 }
