@@ -20,17 +20,34 @@ public class SnakeMovement : MonoBehaviour {
 
     public bool IsAlive { get; private set; } = true;
     public bool IsMoving { get; private set; } = false;
-    private int snakeHP;
-    public int SnakeHP {
+
+    private float snakeHP;
+    public float SnakeHP {
         get => snakeHP;
         private set {
-            if (snakeHP != value) {
+            if (snakeHP != value && value <= SnakeMaxHP) {
                 snakeHP = value;
+                if (snakeHP < 0) {
+                    snakeHP = 0;
+                }
                 OnHPChanged?.Invoke(snakeHP);
             }
         }
     }
-    public event System.Action<int> OnHPChanged;
+    public event System.Action<float> OnHPChanged;
+
+    private int snakeLength;
+    public int SnakeLength {
+        get => snakeLength;
+        private set {
+            if (snakeLength != value) {
+                snakeLength = value;
+                OnLengthChanged?.Invoke(snakeLength);
+            }
+        }
+    }
+    public event System.Action<int> OnLengthChanged;
+
     private Transform headSpriteTransform;
 
     void Start() {
@@ -162,6 +179,8 @@ public class SnakeMovement : MonoBehaviour {
             GameObject newSegment = Instantiate(segmentPrefab, newSegmentPosition, Quaternion.identity);
             snakeSegments.Add(newSegment.transform);
         }
+        //we're gonna assume the snake length only ever grows... hopefully I don't regret this later.
+        //change length counter here. we'll track it separately and manually.
     }
 
     public List<Vector2Int> GetSnakePositions() {
@@ -179,6 +198,7 @@ public class SnakeMovement : MonoBehaviour {
             Destroy(other.gameObject);
             foodSpawner.SpawnFood();
             GrowSnake(GrowRate);
+            SnakeHP += FoodHealAmount;
             floorGridManager.ExpandBoard();
         }
         else if (other.CompareTag("Wall")) {
@@ -193,7 +213,7 @@ public class SnakeMovement : MonoBehaviour {
     }
 
     void HitBody() {
-        SnakeHP--;
+        SnakeHP -= SelfCollisionDmg;
         if (SnakeHP <= 0) {
             Dead();
         }
@@ -226,6 +246,7 @@ public class SnakeMovement : MonoBehaviour {
         IsAlive = true;
         IsMoving = false;
         SnakeHP = SnakeMaxHP;
+        //update snake length here
         headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
     }
 

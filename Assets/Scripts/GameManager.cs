@@ -54,10 +54,6 @@ public class GameManager : MonoBehaviour {
         }
 
         canvasManager.SetSnakeLength(snakeMovement.GetSnakeLength());
-        //canvasManager.SetSnakeHP(snakeMovement.SnakeHP);
-        //canvasManager.SetHealthBar(snakeMovement.SnakeHP, SnakeMaxHP);
-
-        // tentatively changing to events for HP. moved to CanvasManager.cs
         if (GameStateToPanelMap.TryGetValue(gameState, out string panelName)) {
             canvasManager.ShowPanel(panelName);
         }

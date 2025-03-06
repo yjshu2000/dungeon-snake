@@ -6,9 +6,12 @@ public static class GameConstants {
     public const int ChunkSize = 4; // Each chunk is a 4x4 area of tiles
     public const int GridSize = 4; // Initial size of map (number of chunks)
 
-    // Snake constants
-    public const int SnakeMaxHP = 3;
-    public const float FoodHealAmount = 0.1f;
+    // Snake constants - HP
+    public const float SnakeMaxHP = 100f;
+    public const float FoodHealAmount = 1f;
+    public const float SelfCollisionDmg = 20f;
+    public const float AdventurerBaseDmg = 10f;
+    // the rest
     public const float MoveInterval = 0.2f; // Time between movement steps
     public const float MoveSpeed = 5f; // Speed of movement
     public const int GrowRate = 4; // Number of segments to grow by when eating food

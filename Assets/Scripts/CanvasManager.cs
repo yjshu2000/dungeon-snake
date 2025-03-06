@@ -54,7 +54,7 @@ public class CanvasManager : MonoBehaviour {
         lengthValueText.text = length.ToString();
     }
 
-    void UpdateHealthUI(int newHP) {
+    void UpdateHealthUI(float newHP) {
         SetSnakeHP(newHP);
         SetHealthBar(newHP, SnakeMaxHP);
     }
@@ -65,7 +65,7 @@ public class CanvasManager : MonoBehaviour {
         }
     }
 
-    public void SetSnakeHP(int HP) {
+    public void SetSnakeHP(float HP) {
         HPValueText.text = HP.ToString();
     }
 
