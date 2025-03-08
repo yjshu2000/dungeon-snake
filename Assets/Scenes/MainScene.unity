@@ -405,6 +405,7 @@ MonoBehaviour:
   segmentPrefab: {fileID: 1331771199366504045, guid: 950c3e17f7262fc4282263bbec38c458, type: 3}
   foodSpawnerObject: {fileID: 949340145}
   floorGridManagerObject: {fileID: 1221016997}
+  gameManagerObject: {fileID: 1823253546}
 --- !u!61 &864397733
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -18,9 +18,10 @@ public class FoodSpawner : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        // TEST FUNCTION: Press 'F' to spawn food manually
-        if (Input.GetKeyDown(KeyCode.F)) {
-            SpawnFood();
+        if (IN_DEBUG_MODE) {
+            if (Input.GetKeyDown(KeyCode.F)) {
+                SpawnFood();
+            }
         }
     }
 
@@ -32,7 +33,9 @@ public class FoodSpawner : MonoBehaviour {
             Instantiate(foodPrefab, new Vector3(foodPosition.x, foodPosition.y, 0), Quaternion.identity);
         }
         else {
-            Debug.Log("No food was spawned??");
+            if (IN_DEBUG_MODE) {
+                Debug.Log("No food was spawned??");
+            }
             SpawnFood();
         }
     }

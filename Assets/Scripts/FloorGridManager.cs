@@ -21,8 +21,10 @@ public class FloorGridManager : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.E)) {
-            ExpandBoard();
+        if (IN_DEBUG_MODE) {
+            if (Input.GetKeyDown(KeyCode.E)) {
+                ExpandBoard();
+            }
         }
     }
 

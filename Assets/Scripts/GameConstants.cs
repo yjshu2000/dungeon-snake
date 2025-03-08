@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class GameConstants {
+    // DEBUG MODE
+    public const bool IN_DEBUG_MODE = true;
+
     // Floor Grid constants
     public const int ChunkSize = 4; // Each chunk is a 4x4 area of tiles
     public const int GridSize = 4; // Initial size of map (number of chunks)
