@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
         snakeMovement = snakeObject.GetComponent<SnakeMovement>();
         floorGridManager = floorGridManagerObject.GetComponent<FloorGridManager>();
         foodSpawner = foodManagerObject.GetComponent<FoodSpawner>();
+        SetGameState(gameState);
     }
 
     // Update is called once per frame
@@ -41,20 +42,6 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.R)) {
             ResetGame();
         }
-
-        //// if snake is moving, set gameState to playing
-        //if (snakeMovement.IsMoving) { //* definitely need to get rid of this, but then when do we set to playing? (when do we change isMoving?)
-        //    gameState = GameState.Playing;
-        //}
-
-        //// if snake is dead, set gameState to game over
-        //if (!snakeMovement.IsAlive) { //* we should get rid of this and set this elsewhere
-        //    gameState = GameState.GameOver;
-        //}
-
-        //if (GameStateToPanelMap.TryGetValue(gameState, out string panelName)) {
-        //    canvasManager.ShowPanel(panelName);
-        //}
     }
 
     public void SetGameState(GameState newState) {

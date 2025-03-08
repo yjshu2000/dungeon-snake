@@ -20,7 +20,6 @@ public class SnakeMovement : MonoBehaviour {
     private FloorGridManager floorGridManager;
     private GameManager gameManager;
 
-    public bool IsAlive { get; private set; } = true;
     public bool IsMoving { get; private set; } = false;
 
     private float snakeHP;
@@ -62,7 +61,6 @@ public class SnakeMovement : MonoBehaviour {
         foodSpawner = foodSpawnerObject.GetComponent<FoodSpawner>();
         floorGridManager = floorGridManagerObject.GetComponent<FloorGridManager>();
         gameManager = gameManagerObject.GetComponent<GameManager>();
-        //IsAlive = true; //* I don't think we need this? game state is start.
         IsMoving = false;
         SnakeHP = SnakeMaxHP;
         SnakeLength = snakeSegments.Count;
@@ -86,7 +84,6 @@ public class SnakeMovement : MonoBehaviour {
     }
 
     void HandleInput() {
-        //if (!IsAlive) { //* this should instead check if game state is game over. should probably also check for paused
         if (gameManager.gameState == GameState.GameOver || gameManager.gameState == GameState.Paused) {
             return;
         }
@@ -114,7 +111,6 @@ public class SnakeMovement : MonoBehaviour {
 
     void MoveSnake() {
         moveTimer += Time.fixedDeltaTime;
-        //if (!IsAlive) { //* check both game over and paused state I think 
         if (gameManager.gameState == GameState.GameOver || gameManager.gameState == GameState.Paused) {
             return;
         }
@@ -122,7 +118,7 @@ public class SnakeMovement : MonoBehaviour {
             return;
         }
         if (!IsMoving) {
-            IsMoving = true; //* here: this should also trigger game state to Playing
+            IsMoving = true;
             gameManager.SetGameState(GameState.Playing);
         }
         if (moveTimer >= MoveInterval || inputReceived == true) {
@@ -136,7 +132,7 @@ public class SnakeMovement : MonoBehaviour {
             for (int i = 1; i < snakePositions.Count; i++) {
                 if (snakePositions[i] == new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y))) {
                     HitBody();
-                    if (gameManager.gameState == GameState.GameOver) { //* again, check game over state. probably don't need to check paused state here.
+                    if (gameManager.gameState == GameState.GameOver) {
                         return;
                     }
                 }
@@ -236,7 +232,6 @@ public class SnakeMovement : MonoBehaviour {
 
     private void Dead() {
         IsMoving = false;
-        IsAlive = false; //* change game state here. (to game over)
         gameManager.SetGameState(GameState.GameOver);
         direction = Vector2Int.zero;
     }
@@ -259,9 +254,7 @@ public class SnakeMovement : MonoBehaviour {
             firstSegments = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             snakeSegments.Add(firstSegments.transform);
         }
-        IsAlive = true; //* change game state here? or do we not need to since game Manager should've done that?
-                        //* no wait, it changes game state to Start...
-        IsMoving = false; //* we need to find where this changes to change game State to playing.
+        IsMoving = false;
         SnakeHP = SnakeMaxHP;
         SnakeLength = snakeSegments.Count;
         headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
