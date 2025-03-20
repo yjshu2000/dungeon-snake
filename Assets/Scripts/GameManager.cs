@@ -39,7 +39,11 @@ public class GameManager : MonoBehaviour {
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R)) {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            TogglePause();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return)) {
             ResetGame();
         }
     }
@@ -57,4 +61,24 @@ public class GameManager : MonoBehaviour {
         foodSpawner.ResetFood();
         SetGameState(GameState.Start);
     }
+
+    private void TogglePause() {
+        if (gameState == GameState.Paused) {
+            ResumeGame();
+        }
+        else if (gameState == GameState.Playing) {
+            PauseGame();
+        }
+    }
+
+    private void PauseGame() {
+        SetGameState(GameState.Paused);
+        Time.timeScale = 0f; // Pause game logic
+    }
+
+    private void ResumeGame() {
+        SetGameState(GameState.Playing);
+        Time.timeScale = 1f; // Resume game logic
+    }
+
 }
