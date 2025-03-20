@@ -745,6 +745,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5209813630365613185, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5858474927030140857, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -840,6 +844,14 @@ PrefabInstance:
     - target: {fileID: 7751749428972437765, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
       propertyPath: m_Name
       value: GamePausedPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8950832498171286614, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8950832498171286614, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: m_Maskable
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
