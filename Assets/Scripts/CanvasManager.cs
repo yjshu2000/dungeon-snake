@@ -15,7 +15,6 @@ public class CanvasManager : MonoBehaviour {
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-        //snakeObject = GameObject.Find("SnakeHead");
         snakeMovement = snakeObject.GetComponent<SnakeMovement>();
         snakeMovement.OnHPChanged += UpdateHealthUI;
         snakeMovement.OnLengthChanged += SetSnakeLength; //might change to UpdateScore later
@@ -76,6 +75,4 @@ public class CanvasManager : MonoBehaviour {
             healthBar.value = currentHP / maxHP; // Normalize HP (0 to 1)
         }
     }
-
-
 }
