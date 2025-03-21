@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using static GameConstants;
 
 public class CanvasManager : MonoBehaviour {
-    private GameObject canvas;
+    public GameObject canvas;
     private Dictionary<string, GameObject> panels = new Dictionary<string, GameObject>();
     private TMPro.TextMeshProUGUI lengthValueText;
     private TMPro.TextMeshProUGUI HPValueText;
@@ -15,11 +15,12 @@ public class CanvasManager : MonoBehaviour {
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
+        //snakeObject = GameObject.Find("SnakeHead");
         snakeMovement = snakeObject.GetComponent<SnakeMovement>();
         snakeMovement.OnHPChanged += UpdateHealthUI;
         snakeMovement.OnLengthChanged += SetSnakeLength; //might change to UpdateScore later
 
-        canvas = GameObject.Find("Canvas");
+        //canvas = GameObject.Find("Canvas");
         panels[GameStartPanel] = canvas.transform.Find(GameStartPanel).gameObject;
         panels[GameInProgressPanel] = canvas.transform.Find(GameInProgressPanel).gameObject;
         panels[GameOverPanel] = canvas.transform.Find(GameOverPanel).gameObject;
