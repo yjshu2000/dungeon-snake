@@ -37,7 +37,7 @@ public class FloorGridManager : MonoBehaviour {
         AddWallChunk(new Vector2Int(-1, 0));
         AddWallChunk(new Vector2Int(0, 1));
         AddWallChunk(new Vector2Int(0, -1));
-        for (int i = 0; i < InitialGridChunks; i++) {
+        for (int i = 0; i < GridSize; i++) {
             ExpandBoard();
         }
     }

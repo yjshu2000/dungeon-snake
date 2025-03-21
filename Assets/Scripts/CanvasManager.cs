@@ -22,7 +22,6 @@ public class CanvasManager : MonoBehaviour {
         canvas = GameObject.Find("Canvas");
         panels[GameStartPanel] = canvas.transform.Find(GameStartPanel).gameObject;
         panels[GameInProgressPanel] = canvas.transform.Find(GameInProgressPanel).gameObject;
-        panels[GamePausedPanel] = canvas.transform.Find(GamePausedPanel).gameObject;
         panels[GameOverPanel] = canvas.transform.Find(GameOverPanel).gameObject;
         lengthValueText = panels[GameInProgressPanel].transform.Find("LengthLabelText/LengthValueText").GetComponent<TMPro.TextMeshProUGUI>();
         HPValueText = panels[GameInProgressPanel].transform.Find("SnakeHPLabelText/SnakeHPValueText").GetComponent<TMPro.TextMeshProUGUI>();

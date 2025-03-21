@@ -7,7 +7,7 @@ public static class GameConstants {
 
     // Floor Grid constants
     public const int ChunkSize = 4; // Each chunk is a 4x4 area of tiles
-    public const int InitialGridChunks = 4; // Initial size of map (number of chunks)
+    public const int GridSize = 4; // Initial size of map (number of chunks)
 
     // Snake constants - HP
     public const float SnakeMaxHP = 100f;
@@ -23,15 +23,12 @@ public static class GameConstants {
     // Panel name constants
     public const string GameStartPanel = "GameStartPanel";
     public const string GameInProgressPanel = "GameInProgressPanel";
-    public const string GamePausedPanel = "GamePausedPanel";
     public const string GameOverPanel = "GameOverPanel";
-
 
     // GameState to Panel mapping
     public static readonly Dictionary<GameState, string> GameStateToPanelMap = new Dictionary<GameState, string> {
         { GameState.Start, GameStartPanel },
         { GameState.Playing, GameInProgressPanel },
-        { GameState.Paused, GamePausedPanel },
         { GameState.GameOver, GameOverPanel }
     };
 }
