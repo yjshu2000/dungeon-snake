@@ -312,7 +312,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -343,6 +343,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 864397731}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &378061734 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1778311775380235991, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+  m_PrefabInstance: {fileID: 8897465695512566852}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &864397729
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,11 +402,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac051441c5ba68498be2486c62802a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveInterval: 0.2
-  moveSpeed: 5
-  growRate: 4
-  gridSize: {x: 1, y: 1}
   segmentPrefab: {fileID: 1331771199366504045, guid: 950c3e17f7262fc4282263bbec38c458, type: 3}
+  foodSpawnerObject: {fileID: 949340145}
+  floorGridManagerObject: {fileID: 1221016997}
+  gameManagerObject: {fileID: 1823253546}
 --- !u!61 &864397733
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -498,7 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46b6c8fed6237b1499983cfffe8ab3a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snakeHPValueText: {fileID: 0}
+  snakeObject: {fileID: 864397729}
 --- !u!4 &949255839
 Transform:
   m_ObjectHideFlags: 0
@@ -544,6 +554,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodPrefab: {fileID: 6240340357629054496, guid: 60fccc1ecfed4de48ab977a85164d603, type: 3}
+  floorGridManagerObject: {fileID: 1221016997}
+  snakeObject: {fileID: 864397729}
 --- !u!4 &949340147
 Transform:
   m_ObjectHideFlags: 0
@@ -605,6 +617,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 500492775605616094, guid: ad1e185faf8553e4898363c14f0c57f6, type: 3}
   wallPrefab: {fileID: 2767849599118618672, guid: e8dc8baf321cd314480310905f6877a3, type: 3}
+--- !u!1 &1668233269 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2503551005286880259, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+  m_PrefabInstance: {fileID: 8897465695512566852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1823253546
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,13 +651,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29089b16a714e0247a1bed564a6ea5d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameReady: 1
-  gameInProgress: 0
-  gameOver: 0
-  canvasManager: {fileID: 949255837}
-  snake: {fileID: 864397729}
-  floorGridManager: {fileID: 1221016997}
-  foodManager: {fileID: 949340145}
+  gameState: 0
+  canvasManagerObject: {fileID: 949255837}
+  snakeObject: {fileID: 864397729}
+  floorGridManagerObject: {fileID: 1221016997}
+  foodManagerObject: {fileID: 949340145}
 --- !u!4 &1823253548
 Transform:
   m_ObjectHideFlags: 0
@@ -656,6 +671,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1841066264 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5372416865647205728, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+  m_PrefabInstance: {fileID: 8897465695512566852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1981310284
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +763,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 588169546808793887, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 999755407556247752, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
       propertyPath: m_fontColor.b
       value: 0.5019608
@@ -774,6 +798,14 @@ PrefabInstance:
     - target: {fileID: 3272263047329580023, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -32
+      objectReference: {fileID: 0}
+    - target: {fileID: 4607052035323672740, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4607052035323672740, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5124827044913807195, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
       propertyPath: m_fontColor.b
@@ -871,6 +903,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6013587426887981145, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1668233269}
+    - target: {fileID: 6013587426887981145, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: snakeObject
+      value: 
+      objectReference: {fileID: 864397729}
+    - target: {fileID: 6013587426887981145, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: healthBarObject
+      value: 
+      objectReference: {fileID: 1841066264}
+    - target: {fileID: 6013587426887981145, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: snakeHPValueText
+      value: 
+      objectReference: {fileID: 378061734}
     - target: {fileID: 6347810212429366370, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
       propertyPath: m_text
       value: 'Game Over
@@ -884,6 +932,22 @@ PrefabInstance:
     - target: {fileID: 6347810212429366370, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6853523755173540484, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6853523755173540484, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7141756073565933950, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7141756073565933950, guid: 381110c33a321a84b9a80ea24027ed52, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

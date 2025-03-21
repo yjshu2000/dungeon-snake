@@ -1,24 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static GameConstants;
 
-public class FoodSpawner : MonoBehaviour
-{
+public class FoodSpawner : MonoBehaviour {
     public GameObject foodPrefab;
+    public GameObject floorGridManagerObject;
+    public GameObject snakeObject;
     private FloorGridManager floorGridManager;
     private SnakeMovement snake;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-        floorGridManager = FindAnyObjectByType<FloorGridManager>();
-        snake = FindAnyObjectByType<SnakeMovement>();
+        floorGridManager = floorGridManagerObject.GetComponent<FloorGridManager>();
+        snake = snakeObject.GetComponent<SnakeMovement>();
         Instantiate(foodPrefab, new Vector3(3, 3, 0), Quaternion.identity);
     }
 
     // Update is called once per frame
     void Update() {
-        // TEST FUNCTION: Press 'F' to spawn food manually
-        if (Input.GetKeyDown(KeyCode.F)) {
-            SpawnFood();
+        if (IN_DEBUG_MODE) {
+            if (Input.GetKeyDown(KeyCode.F)) {
+                SpawnFood();
+            }
         }
     }
 
@@ -28,6 +31,12 @@ public class FoodSpawner : MonoBehaviour
         Vector2Int foodPosition = floorGridManager.GetRandomTilePosition(blockedPositions);
         if (foodPosition != Vector2Int.zero) {
             Instantiate(foodPrefab, new Vector3(foodPosition.x, foodPosition.y, 0), Quaternion.identity);
+        }
+        else {
+            if (IN_DEBUG_MODE) {
+                Debug.Log("No food was spawned??");
+            }
+            SpawnFood();
         }
     }
 

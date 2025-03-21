@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
+using static GameConstants;
 
 public class FloorGridManager : MonoBehaviour {
-    private int chunkSize = 4; // Each chunk is a 4x4 area of tiles
-    private int gridSize = 4; // Initial size of map (number of chunks)
     public GameObject tilePrefab; // Prefab for individual tiles
-
     private HashSet<Vector2Int> chunkPositions = new HashSet<Vector2Int>(); // Tracks occupied chunks
     private Dictionary<Vector2Int, GameObject> gridMap = new Dictionary<Vector2Int, GameObject>();
 
@@ -23,8 +21,10 @@ public class FloorGridManager : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.E)) {
-            ExpandBoard();
+        if (IN_DEBUG_MODE) {
+            if (Input.GetKeyDown(KeyCode.E)) {
+                ExpandBoard();
+            }
         }
     }
 
@@ -33,7 +33,7 @@ public class FloorGridManager : MonoBehaviour {
         RemoveAllTiles();
         RemoveAllWall();
         AddChunk(new Vector2Int(0, 0));
-        for (int i = 0; i < gridSize; i++) {
+        for (int i = 0; i < GridSize; i++) {
             ExpandBoard();
         }
     }
@@ -45,11 +45,11 @@ public class FloorGridManager : MonoBehaviour {
 
         chunkPositions.Add(chunkPosition);
 
-        for (int x = 0; x < chunkSize; x++) {
-            for (int y = 0; y < chunkSize; y++) {
+        for (int x = 0; x < ChunkSize; x++) {
+            for (int y = 0; y < ChunkSize; y++) {
                 Vector2Int tilePosition = new Vector2Int(
-                    chunkPosition.x * chunkSize + x,
-                    chunkPosition.y * chunkSize + y
+                    chunkPosition.x * ChunkSize + x,
+                    chunkPosition.y * ChunkSize + y
                 );
 
                 if (!gridMap.ContainsKey(tilePosition)) {
@@ -138,11 +138,11 @@ public class FloorGridManager : MonoBehaviour {
 
         wallChunkPositions.Add(wallChunkPosition);
 
-        for (int x = 0; x < chunkSize; x++) {
-            for (int y = 0; y < chunkSize; y++) {
+        for (int x = 0; x < ChunkSize; x++) {
+            for (int y = 0; y < ChunkSize; y++) {
                 Vector2Int wallPosition = new Vector2Int(
-                    wallChunkPosition.x * chunkSize + x,
-                    wallChunkPosition.y * chunkSize + y
+                    wallChunkPosition.x * ChunkSize + x,
+                    wallChunkPosition.y * ChunkSize + y
                 );
 
                 if (!wallGridMap.ContainsKey(wallPosition)) {

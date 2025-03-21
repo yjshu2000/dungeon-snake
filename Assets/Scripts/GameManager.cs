@@ -1,68 +1,73 @@
+using System.Collections.Generic;
 using UnityEngine;
+using static GameConstants;
 
-public class GameManager : MonoBehaviour
-{
-    public bool gameReady = true;
-    public bool gameInProgress = false;
-    public bool gameOver = false;
-    public GameObject canvasManager;
+public class GameManager : MonoBehaviour {
+    public GameState gameState { get; private set; } = GameState.Start;
 
-    public GameObject snake;
-    public GameObject floorGridManager;
-    public GameObject foodManager;
+    public GameObject canvasManagerObject;
+    public GameObject snakeObject;
+    public GameObject floorGridManagerObject;
+    public GameObject foodManagerObject;
+
+    private CanvasManager canvasManager;
+    private SnakeMovement snakeMovement;
+    private FloorGridManager floorGridManager;
+    private FoodSpawner foodSpawner;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
+    void Start() {
+        canvasManager = canvasManagerObject.GetComponent<CanvasManager>();
+        snakeMovement = snakeObject.GetComponent<SnakeMovement>();
+        floorGridManager = floorGridManagerObject.GetComponent<FloorGridManager>();
+        foodSpawner = foodManagerObject.GetComponent<FoodSpawner>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         // testing UI
-        // if (Input.GetKeyDown(KeyCode.Alpha1)) {
-        //     canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();
-        // }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) {
-            canvasManager.GetComponent<CanvasManager>().ShowGameInProgressPanel();
+        if (IN_DEBUG_MODE) {
+            if (Input.GetKeyDown(KeyCode.Alpha1)) {
+                canvasManager.ShowPanel(GameStartPanel);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2)) {
+                canvasManager.ShowPanel(GameInProgressPanel);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3)) {
+                canvasManager.ShowPanel(GameOverPanel);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            canvasManager.GetComponent<CanvasManager>().ShowGameOverPanel();
-        }
+
         if (Input.GetKeyDown(KeyCode.R)) {
-            floorGridManager.GetComponent<FloorGridManager>().InitializeGrid();
-            snake.GetComponent<SnakeMovement>().ResetSnake();
-            foodManager.GetComponent<FoodSpawner>().ResetFood();
-            canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();
-            gameReady = true;
-            gameInProgress = false;
-            gameOver = false;
+            ResetGame();
         }
 
-        // if snake is moving, set gameInProgress to true
-        if (snake.GetComponent<SnakeMovement>().IsMoving) {
-            gameInProgress = true;
-            gameReady = false;
-            gameOver = false;
-        }
+        //// if snake is moving, set gameState to playing
+        //if (snakeMovement.IsMoving) { //* definitely need to get rid of this, but then when do we set to playing? (when do we change isMoving?)
+        //    gameState = GameState.Playing;
+        //}
 
-        // if snake is dead, set gameOver to true
-        if (!snake.GetComponent<SnakeMovement>().IsAlive) {
-            gameInProgress = false;
-            gameReady = false;
-            gameOver = true;
-        }
+        //// if snake is dead, set gameState to game over
+        //if (!snakeMovement.IsAlive) { //* we should get rid of this and set this elsewhere
+        //    gameState = GameState.GameOver;
+        //}
 
-        canvasManager.GetComponent<CanvasManager>().SetSnakeLength(snake.GetComponent<SnakeMovement>().GetSnakeLength());
-        canvasManager.GetComponent<CanvasManager>().SetSnakeLifePoints(snake.GetComponent<SnakeMovement>().SnakeHP);
+        //if (GameStateToPanelMap.TryGetValue(gameState, out string panelName)) {
+        //    canvasManager.ShowPanel(panelName);
+        //}
+    }
 
-        if (gameReady) {
-            canvasManager.GetComponent<CanvasManager>().ShowGameStartPanel();
-        } else if (gameInProgress) {
-            canvasManager.GetComponent<CanvasManager>().ShowGameInProgressPanel();
-        } else if (gameOver) {
-            canvasManager.GetComponent<CanvasManager>().ShowGameOverPanel();
+    public void SetGameState(GameState newState) {
+        gameState = newState;
+        if (GameStateToPanelMap.TryGetValue(gameState, out string panelName)) {
+            canvasManager.ShowPanel(panelName);
         }
+    }
+
+    private void ResetGame() {
+        floorGridManager.InitializeGrid();
+        snakeMovement.ResetSnake();
+        foodSpawner.ResetFood();
+        SetGameState(GameState.Start);
     }
 }

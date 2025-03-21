@@ -2,9 +2,9 @@
 using System;
 using System.Security.Cryptography;
 using UnityEngine;
+using static GameConstants;
 
-public class SegmentDirection : MonoBehaviour
-{
+public class SegmentDirection : MonoBehaviour {
     // the state of the body.
     // straight vertical
     // straight horizontal
@@ -18,20 +18,6 @@ public class SegmentDirection : MonoBehaviour
     // tail left
     // the direction is the side that connects to the previous segment (towards the head)
     // coil is used for when new segments are created and stacked on the same position
-    public enum Direction
-    {
-        STRAIGHT_VERTICAL,
-        STRAIGHT_HORIZONTAL,
-        CORNER_UP_LEFT,
-        CORNER_UP_RIGHT,
-        CORNER_DOWN_LEFT,
-        CORNER_DOWN_RIGHT,
-        TAIL_UP,
-        TAIL_RIGHT,
-        TAIL_DOWN,
-        TAIL_LEFT,
-        COIL
-    }
 
     // the three different sprites for the body
     // there is straight, corner, and tail
@@ -50,25 +36,26 @@ public class SegmentDirection : MonoBehaviour
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+    void Start() {
         SpriteRotator(direction);
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         SpriteRotator(direction);
     }
 
     // Have snake call this function to update the sprite direction as the snake moves
-    public void SetSpriteDirectionBody(Vector2Int prevSegmentPos, Vector2Int thisSegmentPos, Vector2Int nextSegmentPos) => direction = CalculateBodyDirection(prevSegmentPos, thisSegmentPos, nextSegmentPos);
-    public void SetSpriteDirectionTail(Vector2Int thisSegmentPos, Vector2Int prevSegmentPos) => direction = CalculateTailDirection(thisSegmentPos, prevSegmentPos);
+    public void SetSpriteDirectionBody(Vector2Int prevSegmentPos, Vector2Int thisSegmentPos, Vector2Int nextSegmentPos) {
+        direction = CalculateBodyDirection(prevSegmentPos, thisSegmentPos, nextSegmentPos);
+    }
 
-    private void SpriteRotator(Direction direction)
-    {
-        switch (direction)
-        {
+    public void SetSpriteDirectionTail(Vector2Int thisSegmentPos, Vector2Int prevSegmentPos) {
+        direction = CalculateTailDirection(thisSegmentPos, prevSegmentPos);
+    }
+
+    private void SpriteRotator(Direction direction) {
+        switch (direction) {
             case Direction.STRAIGHT_VERTICAL:
                 spriteRenderer.sprite = straightSprite;
                 spriteObject.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -116,13 +103,12 @@ public class SegmentDirection : MonoBehaviour
         }
     }
 
-    private Direction CalculateBodyDirection(Vector2Int prevSegmentPos, Vector2Int thisSegmentPos, Vector2Int nextSegmentPos)
-    {
+    private Direction CalculateBodyDirection(Vector2Int prevSegmentPos, Vector2Int thisSegmentPos, Vector2Int nextSegmentPos) {
         Vector2Int from = new(prevSegmentPos.x - thisSegmentPos.x, prevSegmentPos.y - thisSegmentPos.y);
         Vector2Int to = new(nextSegmentPos.x - thisSegmentPos.x, nextSegmentPos.y - thisSegmentPos.y);
 
         // same position
-        if (prevSegmentPos == thisSegmentPos) return Direction.COIL;
+        if (thisSegmentPos == nextSegmentPos) return Direction.COIL;
 
         // straight
         if (from == Vector2Int.up && to == Vector2Int.down) return Direction.STRAIGHT_VERTICAL;
@@ -140,27 +126,26 @@ public class SegmentDirection : MonoBehaviour
         if (from == Vector2Int.right && to == Vector2Int.down) return Direction.CORNER_DOWN_RIGHT;
         if (from == Vector2Int.right && to == Vector2Int.up) return Direction.CORNER_UP_RIGHT;
 
-        
-        Debug.Log("where am i going");
-        return Direction.STRAIGHT_VERTICAL;
+        if (IN_DEBUG_MODE) {
+            Debug.Log("where am i going" + "\n" + prevSegmentPos + "  " + thisSegmentPos + "  " + nextSegmentPos);
+        }
+        return Direction.COIL;
     }
 
-    private Direction CalculateTailDirection(Vector2Int thisSegmentPos, Vector2Int prevSegmentPos)
-    {
+    private Direction CalculateTailDirection(Vector2Int thisSegmentPos, Vector2Int prevSegmentPos) {
         if (prevSegmentPos == thisSegmentPos) return Direction.COIL;
-        switch ((prevSegmentPos.x - thisSegmentPos.x, prevSegmentPos.y - thisSegmentPos.y))
-        {
-            case (< 0, _):
-            // this means the previous segment is to the left of this segment
+        switch ((prevSegmentPos.x - thisSegmentPos.x, prevSegmentPos.y - thisSegmentPos.y)) {
+            case ( < 0, _):
+                // this means the previous segment is to the left of this segment
                 return Direction.TAIL_LEFT;
-            case (> 0, _):
-            // this means the previous segment is to the right of this segment
+            case ( > 0, _):
+                // this means the previous segment is to the right of this segment
                 return Direction.TAIL_RIGHT;
             case (_, < 0):
-            // this means the previous segment is below this segment
+                // this means the previous segment is below this segment
                 return Direction.TAIL_DOWN;
             case (_, > 0):
-            // this means the previous segment is above this segment
+                // this means the previous segment is above this segment
                 return Direction.TAIL_UP;
             default:
                 return Direction.COIL;

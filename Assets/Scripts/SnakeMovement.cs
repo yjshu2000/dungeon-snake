@@ -2,39 +2,70 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
+using static GameConstants;
 
-public class SnakeMovement : MonoBehaviour
-{
+public class SnakeMovement : MonoBehaviour {
     private float moveTimer = 0f;
-    public float moveInterval = 0.2f; // Time between movement steps
-    public float moveSpeed = 5f; // Speed of movement
-    public int growRate = 4; // Number of segments to grow by when eating food
-    public Vector2Int gridSize = new Vector2Int(1, 1); // Grid size
+    private Vector2Int gridSize = new Vector2Int(1, 1); // Grid size
     private Vector2Int direction = Vector2Int.zero; // Default direction
-
     private bool inputReceived = false;
 
     public GameObject segmentPrefab; // Prefab for a single snake segment
     private List<Transform> snakeSegments = new List<Transform>(); // List of snake body segments
 
+    public GameObject foodSpawnerObject;
+    public GameObject floorGridManagerObject;
+    public GameObject gameManagerObject;
     private FoodSpawner foodSpawner;
     private FloorGridManager floorGridManager;
+    private GameManager gameManager;
 
     public bool IsAlive { get; private set; } = true;
     public bool IsMoving { get; private set; } = false;
-    private int defaultSnakeHP = 3;
-    public int SnakeHP { get; private set; }
+
+    private float snakeHP;
+    public float SnakeHP {
+        get => snakeHP;
+        private set {
+            if (snakeHP != value && value <= SnakeMaxHP) {
+                snakeHP = value;
+                if (snakeHP < 0) {
+                    snakeHP = 0;
+                }
+                OnHPChanged?.Invoke(snakeHP);
+            }
+        }
+    }
+    public event System.Action<float> OnHPChanged;
+
+    private int snakeLength;
+    public int SnakeLength {
+        get => snakeLength;
+        private set {
+            if (snakeLength != value) {
+                snakeLength = value;
+                OnLengthChanged?.Invoke(snakeLength);
+            }
+        }
+    }
+    public event System.Action<int> OnLengthChanged;
+
     private Transform headSpriteTransform;
 
     void Start() {
         snakeSegments.Add(transform); // Add head as first segment, then add 1 body segment
-        GameObject firstSegment = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        snakeSegments.Add(firstSegment.transform);
-        foodSpawner = FindAnyObjectByType<FoodSpawner>();
-        floorGridManager = FindAnyObjectByType<FloorGridManager>();
-        IsAlive = true;
+        GameObject firstSegments;
+        for (int i = 0; i < InitialSnakeSize; i++) {
+            firstSegments = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            snakeSegments.Add(firstSegments.transform);
+        }
+        foodSpawner = foodSpawnerObject.GetComponent<FoodSpawner>();
+        floorGridManager = floorGridManagerObject.GetComponent<FloorGridManager>();
+        gameManager = gameManagerObject.GetComponent<GameManager>();
+        //IsAlive = true; //* I don't think we need this? game state is start.
         IsMoving = false;
-        SnakeHP = defaultSnakeHP;
+        SnakeHP = SnakeMaxHP;
+        SnakeLength = snakeSegments.Count;
 
         headSpriteTransform = transform.GetComponentInChildren<SpriteRenderer>().transform;
         headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
@@ -42,10 +73,10 @@ public class SnakeMovement : MonoBehaviour
 
     void Update() {
         HandleInput();
-
-        // TEST FUNCTION: Press 'G' to grow snake manually
-        if (Input.GetKeyDown(KeyCode.G)) {
-            GrowSnake(growRate);
+        if (IN_DEBUG_MODE) {
+            if (Input.GetKeyDown(KeyCode.G)) {
+                GrowSnake(GrowRate);
+            }
         }
     }
 
@@ -55,7 +86,8 @@ public class SnakeMovement : MonoBehaviour
     }
 
     void HandleInput() {
-        if (!IsAlive) {
+        //if (!IsAlive) { //* this should instead check if game state is game over. should probably also check for paused
+        if (gameManager.gameState == GameState.GameOver || gameManager.gameState == GameState.Paused) {
             return;
         }
         if (Input.GetKeyDown(KeyCode.UpArrow) && direction != Vector2Int.down && direction != Vector2Int.up) {
@@ -82,14 +114,18 @@ public class SnakeMovement : MonoBehaviour
 
     void MoveSnake() {
         moveTimer += Time.fixedDeltaTime;
-        if (!IsAlive) {
+        //if (!IsAlive) { //* check both game over and paused state I think 
+        if (gameManager.gameState == GameState.GameOver || gameManager.gameState == GameState.Paused) {
             return;
         }
         if (direction == Vector2Int.zero) {
             return;
         }
-        IsMoving = true;
-        if (moveTimer >= moveInterval || inputReceived == true) {
+        if (!IsMoving) {
+            IsMoving = true; //* here: this should also trigger game state to Playing
+            gameManager.SetGameState(GameState.Playing);
+        }
+        if (moveTimer >= MoveInterval || inputReceived == true) {
             inputReceived = false;
             if (IsMovingIntoWall()) {
                 Dead();
@@ -100,7 +136,7 @@ public class SnakeMovement : MonoBehaviour
             for (int i = 1; i < snakePositions.Count; i++) {
                 if (snakePositions[i] == new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y))) {
                     HitBody();
-                    if (!IsAlive) {
+                    if (gameManager.gameState == GameState.GameOver) { //* again, check game over state. probably don't need to check paused state here.
                         return;
                     }
                 }
@@ -152,6 +188,8 @@ public class SnakeMovement : MonoBehaviour
             GameObject newSegment = Instantiate(segmentPrefab, newSegmentPosition, Quaternion.identity);
             snakeSegments.Add(newSegment.transform);
         }
+        //we're gonna assume the snake length only ever grows... hopefully I don't regret this later.
+        SnakeLength += segments;
     }
 
     public List<Vector2Int> GetSnakePositions() {
@@ -165,25 +203,32 @@ public class SnakeMovement : MonoBehaviour
     // COLLISION HANDLING
     void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Food")) {
-            Debug.Log("Hit a food!");
+            if (IN_DEBUG_MODE) {
+                Debug.Log("Hit a food!");
+            }
             Destroy(other.gameObject);
             foodSpawner.SpawnFood();
-            GrowSnake(growRate);
+            GrowSnake(GrowRate);
+            SnakeHP += FoodHealAmount;
             floorGridManager.ExpandBoard();
         }
         else if (other.CompareTag("Wall")) {
             // Implement damage or stop movement logic
-            Debug.Log("Hit a wall!");
+            if (IN_DEBUG_MODE) {
+                Debug.Log("Hit a wall!");
+            }
             // Dead();
         }
         else if (other.CompareTag("SnakeBody")) {
-            Debug.Log("Hit yourself!");
+            if (IN_DEBUG_MODE) {
+                Debug.Log("Hit yourself!");
+            }
             // HitBody();
         }
     }
 
     void HitBody() {
-        SnakeHP--;
+        SnakeHP -= SelfCollisionDmg;
         if (SnakeHP <= 0) {
             Dead();
         }
@@ -191,7 +236,8 @@ public class SnakeMovement : MonoBehaviour
 
     private void Dead() {
         IsMoving = false;
-        IsAlive = false;
+        IsAlive = false; //* change game state here. (to game over)
+        gameManager.SetGameState(GameState.GameOver);
         direction = Vector2Int.zero;
     }
 
@@ -208,11 +254,16 @@ public class SnakeMovement : MonoBehaviour
         snakeSegments.RemoveRange(1, snakeSegments.Count - 1);
         transform.position = new Vector3(1, 0, 0);
         direction = Vector2Int.zero;
-        GameObject firstSegment = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        snakeSegments.Add(firstSegment.transform);
-        IsAlive = true;
-        IsMoving = false;
-        SnakeHP = defaultSnakeHP;
+        GameObject firstSegments;
+        for (int i = 0; i < InitialSnakeSize; i++) {
+            firstSegments = Instantiate(segmentPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            snakeSegments.Add(firstSegments.transform);
+        }
+        IsAlive = true; //* change game state here? or do we not need to since game Manager should've done that?
+                        //* no wait, it changes game state to Start...
+        IsMoving = false; //* we need to find where this changes to change game State to playing.
+        SnakeHP = SnakeMaxHP;
+        SnakeLength = snakeSegments.Count;
         headSpriteTransform.rotation = Quaternion.Euler(0, 0, -90);
     }
 
